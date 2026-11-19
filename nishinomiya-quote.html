@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Quote Detectives: Nishinomiya</title>
+<style>
+body{font-family:system-ui,-apple-system,sans-serif;background:linear-gradient(160deg,#fef6e4,#e0f4ff);margin:0;color:#1d2433;line-height:1.55}
+main{max-width:780px;margin:0 auto;padding:20px}
+h1{font-size:1.8rem;margin:.3em 0}
+h2{font-size:1.4rem;margin:.3em 0}
+.card{background:#fff;border-radius:18px;padding:20px;margin:14px 0;box-shadow:0 4px 12px rgba(0,0,0,.08)}
+.quote{font-size:1.15rem;font-weight:600}
+.src{font-size:.95rem;margin-top:10px}
+button{font:inherit;font-size:1.1rem;padding:12px 22px;border-radius:14px;border:none;background:#ffb703;color:#1d2433;cursor:pointer;margin:6px 8px 6px 0;font-weight:700;box-shadow:0 3px 0 #d98e00}
+button:active{transform:translateY(2px);box-shadow:none}
+button.alt{background:#8ecae6;box-shadow:0 3px 0 #4a9bc2}
+button.go{background:#06d6a0;box-shadow:0 3px 0 #04a77b}
+button:disabled{opacity:.5;cursor:default;transform:none}
+.good{color:#0a7d4f}
+.bad{color:#c0392b}
+.col{background:#fff;border:3px dashed #8ecae6;border-radius:18px;min-height:170px;padding:12px;cursor:pointer}
+.col h3{margin:0 0 8px;font-size:1.05rem}
+.chip{display:block;background:#fff3c4;border:3px solid transparent;border-radius:12px;padding:10px 12px;margin:8px 0;cursor:pointer;font-size:1rem;font-weight:600}
+.chip.sel{border-color:#fb8500;transform:scale(1.02)}
+.chip.right{background:#d8f8e8}
+.chip.wrong{background:#ffd9d3}
+.chip small{display:block;color:#4a5568;font-weight:400;margin-top:4px}
+.hidden{display:none}
+.muted{color:#4a5568;font-size:.98rem}
+.bar{background:#fff;border-radius:99px;height:18px;overflow:hidden;box-shadow:inset 0 1px 3px rgba(0,0,0,.1)}
+.bar > div{height:100%;width:0;background:linear-gradient(90deg,#ffb703,#06d6a0);transition:width .4s}
+.stars{font-size:2rem;letter-spacing:4px}
+.big{font-size:1.4rem;font-weight:800}
+.pop{display:inline-block;animation:pop .5s}
+@keyframes pop{0%{transform:scale(.5)}70%{transform:scale(1.15)}100%{transform:scale(1)}}
+.speak{font-size:1rem;padding:8px 14px}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+a{color:#1d4ed8;font-weight:700}
+</style>
+</head>
+<body>
+<main>
+
+<section id="intro">
+  <h1>🕵️ Quote Detectives: Nishinomiya</h1>
+  <h2>Meet Mayor Toshiro Ishii!</h2>
+  <p>
+    <a href="nishinomiya-quests.html" style="display:inline-block;background:#8ecae6;color:#1d2433;padding:10px 16px;border-radius:14px;text-decoration:none;font-weight:700;box-shadow:0 3px 0 #4a9bc2">📖 Learn about Mayor Ishii</a>
+  </p>
+  <div class="card">
+    <p class="big">Mission 1: AI check!</p>
+    <p>AI can help, but AI can be wrong. Read each AI answer, then choose <b>Check the source first</b> or <b>Trust it</b>. Detectives always check the source before they trust an answer.</p>
+    <p class="big">Mission 2: Real quote or summary?</p>
+    <p>Read each card. Is it the mayor's <b>real words</b>, or a <b>summary</b> written about what he said? Click the clue link to check the source.</p>
+    <p class="big">Mission 3: Sort the questions!</p>
+    <p>Can we <b>find the answer online</b>, or can only the mayor tell us?</p>
+    <p class="muted">Mayor Toshiro Ishii (石井登志郎) has been mayor of Nishinomiya since 2018 and began his third term in April 2026. Japanese quotes have rough English translations; a Japanese speaker should check them.</p>
+    <p>More from the mayor: <a href="https://toshiro.jp/" target="_blank" rel="noopener">his official site</a></p>
+    <button class="go" id="startBtn">🚀 Start the mission!</button>
+  </div>
+</section>
+
+<section id="roundA" class="hidden">
+  <h2>Mission 2: Quote or summary?</h2>
+  <div class="bar"><div id="barA"></div></div>
+  <p class="muted">Card <span id="qNum"></span> of 6 · ⭐ <span id="scoreA">0</span></p>
+  <div class="card">
+    <p class="quote" id="qText"></p>
+    <button class="alt speak" id="speakA">🔊 Listen</button>
+    <p class="muted" id="qEn"></p>
+    <p class="src">🔎 Clue: <a id="qSrc" href="#" target="_blank" rel="noopener">open source</a> (<span id="qSrcName"></span>)</p>
+    <p class="src">🔑 Look for: <b id="qKey"></b></p>
+  </div>
+  <div>
+    <button id="btnQuote">💬 Real quote!</button>
+    <button class="alt" id="btnSummary">📝 Summary</button>
+  </div>
+  <div id="feedback" class="card hidden"></div>
+  <button class="go hidden" id="nextA">Next ➡️</button>
+</section>
+
+<section id="roundB" class="hidden">
+  <h2>Mission 3: Sort the questions!</h2>
+  <p class="muted">👆 Tap a question, then tap a box. Tap a question in a box to move it back.</p>
+  <button class="alt speak" id="speakB">🔊 Read the selected question</button>
+  <div id="pool"></div>
+  <div class="cols">
+    <div class="col" data-col="online"><h3>🌐 Can find online</h3><div class="items"></div></div>
+    <div class="col" data-col="leader"><h3>🎤 Only the leader can tell us</h3><div class="items"></div></div>
+  </div>
+  <button class="go" id="checkB">✅ Check my answers</button>
+  <div id="resultB" class="card hidden"></div>
+</section>
+
+<section id="roundC" class="hidden">
+  <h2>Mission 1: AI check!</h2>
+  <p class="big">AI can help, but AI can be wrong. What should a detective do?</p>
+  <p class="muted">Read each AI answer. Choose what you will do before you trust it.</p>
+  <p class="muted">This is what you will see when you Google a question in AI Mode:</p>
+  <div style="background:#fff;border-radius:18px;padding:16px;margin:8px 0 14px;box-shadow:0 4px 12px rgba(0,0,0,.08)"><svg width="100%" viewBox="0 0 680 380" role="img" xmlns="http://www.w3.org/2000/svg" style="max-width:680px;height:auto;display:block;margin:0 auto"><title>Google search screen in AI Mode</title><desc>A simple drawing of Google's AI Mode page: tabs across the top with AI Mode selected, a question bubble, placeholder lines for the answer, and an Ask anything box at the bottom.</desc><text x="40" y="40" font-family="system-ui,sans-serif" font-size="16" font-weight="700" fill="#1d2433">AI Mode</text><rect x="40" y="52" width="72" height="3" rx="1.5" fill="#1d2433"/><text x="140" y="40" font-family="system-ui,sans-serif" font-size="14" fill="#4a5568">All</text><text x="200" y="40" font-family="system-ui,sans-serif" font-size="14" fill="#4a5568">Images</text><text x="280" y="40" font-family="system-ui,sans-serif" font-size="14" fill="#4a5568">News</text><text x="345" y="40" font-family="system-ui,sans-serif" font-size="14" fill="#4a5568">Videos</text><text x="420" y="40" font-family="system-ui,sans-serif" font-size="14" fill="#4a5568">More</text><rect x="340" y="80" width="300" height="40" rx="20" fill="#e8edf5"/><text x="490" y="100" text-anchor="middle" dominant-baseline="central" font-family="system-ui,sans-serif" font-size="15" fill="#1d2433">Mayor Toshiro Ishii of Nishinomiya</text><rect x="40" y="150" width="600" height="14" rx="7" fill="#e5e7eb"/><rect x="40" y="176" width="560" height="14" rx="7" fill="#e5e7eb"/><rect x="40" y="202" width="600" height="14" rx="7" fill="#e5e7eb"/><rect x="40" y="228" width="300" height="14" rx="7" fill="#e5e7eb"/><rect x="40" y="280" width="600" height="72" rx="28" fill="#ffffff" stroke="#cbd5e0" stroke-width="1"/><text x="72" y="316" dominant-baseline="central" font-family="system-ui,sans-serif" font-size="16" fill="#718096">Ask anything</text><circle cx="604" cy="316" r="12" fill="none" stroke="#cbd5e0" stroke-width="1"/></svg>
+  <p class="src">Source: <a href="https://drive.google.com/file/d/1pYvpCzOU6UYzAay0MfNfanE1_WxIbEOg/view?usp=sharing" target="_blank" rel="noopener">Google AI Mode</a></p></div>
+  <div id="aiItems"></div>
+  <div id="resultC" class="card hidden"></div>
+  <button class="go hidden" id="finishC">➡️ Mission 2: Quote or summary?</button>
+</section>
+
+<section id="done" class="hidden">
+  <div class="card" style="text-align:center">
+    <h2>🎉 Mission complete!</h2>
+    <p class="stars" id="stars"></p>
+    <p class="big" id="finalScore"></p>
+    <p id="badge"></p>
+    <p>🧠 Exit ticket: One thing AI can get wrong is ___. I would check it by ___.</p>
+    <button class="go" id="restart">🔁 Play again</button>
+  </div>
+</section>
+
+<p><a href="index.html" style="display:inline-block;background:#ffb703;color:#1d2433;padding:10px 16px;border-radius:14px;text-decoration:none;font-weight:700">🏠 Back to the main page</a></p>
+<p class="muted" style="font-size:.9rem;margin-top:24px">This page was made with Claude AI for educational purposes. No information is obtained from the students.</p>
+</main>
+<script>
+const cards = [
+  {kind:'quote', key:'前へ', keyEn:'forward', text:'「もっと前へ！」', en:'Move further forward!', src:'https://toshiro.jp/', srcName:'Official site, site tagline', srcType:'Official website (the mayor\'s own site)', jp:'もっと前へ！', enjp:'Move further forward!'},
+  {kind:'summary', key:'コロナ', keyEn:'COVID-19', text:'In his 2022 campaign, the mayor asked voters to judge him on his record during the COVID-19 fight, and said he would make the city shine even more.', en:'', src:'https://www.kobe-np.co.jp/news/hanshin/202203/0015171064.shtml', srcName:'Kobe Shimbun, March 2022 election report', srcType:'Newspaper, online edition (Kobe Shimbun)', jp:'新型コロナとの戦いだった任期中の実績を訴え、文教住宅都市を「さらに輝かせる」と市民に語りかけてきた。', enjp:'He campaigned on his record during the COVID-19 fight and told citizens he would make the city of culture and housing shine even more.'},
+  {kind:'quote', key:'市民', keyEn:'citizens', text:'「市民の皆様のご負託にしっかりと応えていくという決意で職務に当たってまいります。」', en:'I will carry out my duties with determination to live up to the trust citizens have placed in me.', src:'https://www.nishi.or.jp/shisei/mayor/photonews/r8/20260415162155320.html', srcName:'Nishinomiya City website, April 2026 swearing-in', srcType:'Official website (Nishinomiya City)', jp:'市民の皆様のご負託にしっかりと応えていくという決意で職務に当たってまいります。', enjp:'I will carry out my duties with determination to live up to the trust citizens have placed in me.'},
+  {kind:'summary', key:'待機児童', keyEn:'childcare waiting list', text:'In 2021, the mayor said his first term started administrative reform and made progress on childcare waiting lists and education.', en:'', src:'https://www.kobe-np.co.jp/news/sougou/202111/0014878763.shtml', srcName:'Kobe Shimbun, November 2021 re-election announcement', srcType:'Newspaper, online edition (Kobe Shimbun)', jp:'行政経営改革に着手し、待機児童の解消や教育環境の充実など一定の成果を上げた', enjp:'He started administrative reform and produced results such as clearing childcare waiting lists and improving education.'},
+  {kind:'quote', key:'共に', keyEn:'together', text:'「市民と共に、めざす西宮が、ある！」', en:'The Nishinomiya we aim for is within reach, together with citizens!', src:'https://toshiro.jp/', srcName:'Official site, policy section', srcType:'Official website (the mayor\'s own site)', jp:'市民と共に、めざす西宮が、ある！', enjp:'The Nishinomiya we aim for is within reach, together with citizens!'},
+  {kind:'summary', key:'市民と市政', keyEn:'citizens and city hall', text:'In 2018, the mayor said that after having children and joining local activities, he became concerned about the distance between citizens and city hall.', en:'', src:'https://go2senkyo.com/articles/?p=34891', srcName:'Election information website, March 2018 candidate profile', srcType:'Election information website (go2senkyo)', jp:'子どもが生まれて地域活動をする中で、市民と市政の遠さに問題意識を持った', enjp:'After having children and joining local activities, he became concerned about the distance between citizens and city hall.'}
+];
+
+const questions = [
+  {q:'How many people live in Nishinomiya? 🏙️', a:'online', why:'The city publishes its population.'},
+  {q:'Where is Nishinomiya City Hall? 🗺️', a:'online', why:'City Hall addresses are public.'},
+  {q:'How many terms has Mayor Ishii served? 📅', a:'online', why:'His city profile lists his three terms.'},
+  {q:'What are Mayor Ishii\'s hobbies? 🎾', a:'online', why:'His city profile lists his hobbies.'},
+  {q:'What standard did he use for hard decisions during COVID? 😷', a:'online', why:'A Kobe Shimbun article reports the standard he used.'},
+  {q:'What did you feel when you were re-elected? 🎉', a:'leader', why:'Only he can describe how it felt.'},
+  {q:'What do you enjoy most about your job? 💼', a:'leader', why:'Only he can share what he enjoys.'},
+  {q:'What is your favorite place in Nishinomiya? 🌳', a:'leader', why:'Only he can share his favorite place.'}
+];
+
+function shuffle(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}return arr;}
+function show(id){['intro','roundA','roundB','roundC','done'].forEach(s=>document.getElementById(s).classList.toggle('hidden',s!==id));}
+
+// Read aloud: English only. Pressing Listen again stops the audio.
+function speakText(text){
+  if(!('speechSynthesis' in window)) return false;
+  if(speechSynthesis.speaking){ speechSynthesis.cancel(); return true; }
+  try{
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang='en-US'; u.rate=0.92;
+    const vs=speechSynthesis.getVoices();
+    const v=vs.find(x=>x.lang.toLowerCase().startsWith('en')&&/natural|enhanced|premium|neural/i.test(x.name))||vs.find(x=>x.lang.toLowerCase().startsWith('en'));
+    if(v) u.voice=v;
+    speechSynthesis.speak(u); return true;
+  }catch(e){ return false; }
+}
+document.getElementById('speakA').onclick=()=>{
+  const c=order[idxA];
+  const AUD={'前へ':'/_blob/135fddd33df843d0c7a7b9a12a53b07c','コロナ':'/_blob/81d77d2a5c0aede9ed4e8287c62c5635','市民':'/_blob/5a715729ff60876836c577a6a2837154','待機児童':'/_blob/e1c9be516b3440541f9b0a002f948e08','共に':'/_blob/b3325fcebfb27424601a450c757bc5ae','市民と市政':'/_blob/ce04ddc2226571be79d39f5737f8f674'};
+  if(AUD[c.key]){ if(window._nAud&&!window._nAud.paused){window._nAud.pause();window._nAud=null;} window._nAud=new Audio(AUD[c.key]); window._nAud.play(); return; }
+  const t=c.kind==='quote'?c.en:c.text;
+  const b=document.getElementById('speakA');
+  if(!speakText(t)) b.textContent='🔇 Read-aloud is not available here';
+};
+document.getElementById('speakB').onclick=()=>{
+  const b=document.getElementById('speakB');
+  const q=qs.find(x=>x.id===sel);
+  if(speechSynthesis.speaking){ speechSynthesis.cancel(); return; }
+  if(!q){ b.textContent='👆 Tap a question first, then press me'; return; }
+  if(!speakText(q.q.replace(/[\u{1F000}-\u{1FAFF}☀-➿️]/gu,'').trim())) b.textContent='🔇 Read-aloud is not available here';
+};
+
+// Mission 1
+let order=[], idxA=0, scoreA=0, answeredA=false;
+const btnQuote=document.getElementById('btnQuote');
+const btnSummary=document.getElementById('btnSummary');
+function showA(){
+  const c=order[idxA];
+  document.getElementById('qNum').textContent=idxA+1;
+  document.getElementById('scoreA').textContent=scoreA;
+  document.getElementById('barA').style.width=(idxA/order.length*100)+'%';
+  document.getElementById('qText').textContent=c.text;
+  document.getElementById('qEn').textContent=c.kind==='quote'?c.en:'';
+  const a=document.getElementById('qSrc'); a.href=c.src; a.textContent='open source';
+  document.getElementById('qSrcName').textContent=c.srcName;
+  document.getElementById('qKey').textContent=c.key+' ('+c.keyEn+')';
+  document.getElementById('feedback').classList.add('hidden');
+  document.getElementById('nextA').classList.add('hidden');
+  btnQuote.disabled=false; btnSummary.disabled=false; answeredA=false;
+}
+function answerA(guessQuote){
+  if(answeredA) return; answeredA=true;
+  const c=order[idxA];
+  const correct=guessQuote===(c.kind==='quote');
+  if(correct) scoreA++;
+  document.getElementById('scoreA').textContent=scoreA;
+  btnQuote.disabled=true; btnSummary.disabled=true;
+  const fb=document.getElementById('feedback');
+  fb.innerHTML=
+    '<p class="big '+(correct?'good':'bad')+'"><span class="pop">'+(correct?'🌟 Correct!':'🙈 Oops, not quite!')+'</span></p>'+
+    '<p>'+(c.kind==='quote'?'This is a real quote from the mayor.':'This is a summary someone wrote about what the mayor said.')+'</p>'+
+    '<p>🔎 Open the clue and compare the words with the card.</p>'+
+    '<p>📖 <b>Source sentence:</b> '+c.jp+'</p>'+
+    '<p><i>English: '+c.enjp+'</i></p>'+
+    '<p>🗞️ <b>Source type:</b> '+c.srcType+'</p>';
+  fb.classList.remove('hidden');
+  const next=document.getElementById('nextA');
+  next.textContent=idxA<order.length-1?'Next ➡️':'Mission 2 ➡️';
+  next.classList.remove('hidden');
+}
+btnQuote.onclick=()=>answerA(true);
+btnSummary.onclick=()=>answerA(false);
+document.getElementById('nextA').onclick=()=>{ idxA++; if(idxA<order.length) showA(); else startB(); };
+document.getElementById('startBtn').onclick=()=>startC();
+
+// Mission 2
+let qs=[], place={}, sel=null, checked=false, scoreB=0;
+function startB(){
+  qs=shuffle(questions.map((q,i)=>({...q,id:i})));
+  place={}; sel=null; checked=false; scoreB=0;
+  document.getElementById('resultB').classList.add('hidden');
+  const btn=document.getElementById('checkB');
+  btn.disabled=false; btn.textContent='✅ Check my answers'; btn.onclick=checkB;
+  show('roundB'); renderB();
+}
+function makeChip(q){
+  const d=document.createElement('div'); d.className='chip';
+  if(sel===q.id) d.classList.add('sel');
+  d.textContent=q.q;
+  if(checked){
+    const ok=place[q.id]===q.a;
+    d.classList.add(ok?'right':'wrong');
+    const s=document.createElement('small'); s.textContent=(ok?'⭐ Nice! ':'🙈 Try again: ')+q.why; d.appendChild(s);
+  } else {
+    d.onclick=()=>{
+      if(place[q.id]!==undefined){ delete place[q.id]; sel=null; }
+      else sel=sel===q.id?null:q.id;
+      renderB();
+    };
+  }
+  return d;
+}
+function renderB(){
+  const pool=document.getElementById('pool'); pool.innerHTML='';
+  document.querySelectorAll('.col .items').forEach(el=>el.innerHTML='');
+  qs.forEach(q=>{
+    const el=makeChip(q);
+    if(place[q.id]===undefined) pool.appendChild(el);
+    else document.querySelector('.col[data-col="'+place[q.id]+'"] .items').appendChild(el);
+  });
+}
+document.querySelectorAll('.col').forEach(col=>{
+  col.onclick=()=>{ if(checked||sel===null) return; place[sel]=col.dataset.col; sel=null; renderB(); };
+});
+function checkB(){
+  const res=document.getElementById('resultB');
+  if(Object.keys(place).length<qs.length){ res.innerHTML='<p>📦 Put every question in a box first!</p>'; res.classList.remove('hidden'); return; }
+  checked=true;
+  scoreB=qs.filter(q=>place[q.id]===q.a).length;
+  renderB();
+  res.innerHTML='<p class="big">Mission 3 score: '+scoreB+' / '+qs.length+' 🌟</p><p>Facts you can look up online go in one box. Feelings, favorites and opinions need a real conversation with the mayor.</p>';
+  res.classList.remove('hidden');
+  const btn=document.getElementById('checkB'); btn.textContent='🏁 See my stars'; btn.onclick=showDone;
+}
+// Mission 3: AI check
+const AI_ITEMS = [
+  {q:'AI says: Mayor Toshiro Ishii was born in 1980 and grew up in Tokyo.', ok:false, why:'He was born on May 29, 1971, and grew up in Kusunoki-cho, Ashiya City.', src:'https://toshiro.jp/profile/', srcName:'toshiro.jp/profile (Japanese, use Translate)'},
+  {q:'AI says: Mayor Ishii has been the mayor of Nishinomiya since 2018.', ok:true, why:'', src:'https://toshiro.jp/profile/', srcName:'toshiro.jp/profile (Japanese, use Translate)'},
+  {q:'AI says: In 2018, Mayor Ishii received 3,783 votes.', ok:false, why:'He received 37,831 votes.', src:'https://toshiro.jp/profile/', srcName:'toshiro.jp/profile (Japanese, use Translate)'}
+];
+let scoreC = 0;
+function startC() { scoreC = 0; document.getElementById('resultC').classList.add('hidden'); document.getElementById('finishC').classList.add('hidden'); show('roundC'); renderC(); }
+function startA() { order=shuffle([...cards]); idxA=0; scoreA=0; showA(); show('roundA'); }
+function renderC() {
+  const el = document.getElementById('aiItems');
+  el.innerHTML = '';
+  AI_ITEMS.forEach((it, i) => {
+    const d = document.createElement('div');
+    d.className = 'card';
+    d.innerHTML = '<p class="big">🤖 ' + it.q + '</p><button class="go" data-i="' + i + '" data-act="check">✅ Check the source first</button> <button class="alt" data-i="' + i + '" data-act="trust">🤷 Trust it</button><p class="fb"></p>';
+    el.appendChild(d);
+  });
+  el.querySelectorAll('button').forEach(b => b.onclick = () => answerC(+b.dataset.i, b.dataset.act, b));
+}
+function answerC(i, act, btn) {
+  const card = btn.closest('.card');
+  if (card.dataset.done) return;
+  card.dataset.done = '1';
+  card.querySelectorAll('button').forEach(x => x.disabled = true);
+  const it = AI_ITEMS[i];
+  const fb = card.querySelector('.fb');
+  if (act === 'check') {
+    scoreC++;
+    fb.innerHTML = '<b class="good">✅ Smart detective! AI can make mistakes, so check the official source: <a href="' + it.src + '" target="_blank" rel="noopener">' + it.srcName + '</a></b>';
+  } else {
+    fb.innerHTML = '<b class="bad">' + (it.ok ? '🤔 It is right this time, but you cannot know that without checking.' : '❌ Careful! AI made a mistake. ' + it.why) + '</b>';
+  }
+  if (document.querySelectorAll('#aiItems .card[data-done]').length === AI_ITEMS.length) {
+    const r = document.getElementById('resultC');
+    r.innerHTML = '<p class="big">Mission 1 score: ' + scoreC + ' / ' + AI_ITEMS.length + ' 🌟</p><p>Always check AI with a real source before you trust it.</p>';
+    r.classList.remove('hidden');
+    const f = document.getElementById('finishC');
+    f.classList.remove('hidden');
+    f.onclick = startA;
+  }
+}
+function showDone(){
+  const total=scoreA+scoreB+scoreC, max=cards.length+qs.length+AI_ITEMS.length, pct=total/max;
+  const stars=pct>=0.85?5:pct>=0.65?4:pct>=0.45?3:pct>=0.25?2:1;
+  document.getElementById('stars').textContent='⭐'.repeat(stars)+'☆'.repeat(5-stars);
+  document.getElementById('finalScore').textContent='Mission 1: '+scoreC+' / '+AI_ITEMS.length+' · Mission 2: '+scoreA+' / '+cards.length+' · Mission 3: '+scoreB+' / '+qs.length;
+  const badges=['🌱 Quote Explorer','🔍 Clue Finder','🕵️ Quote Detective','🏆 Master Detective','👑 Super Detective'];
+  document.getElementById('badge').textContent='Your badge: '+badges[stars-1];
+  show('done');
+}
+document.getElementById('restart').onclick=()=>show('intro');
+</script>
+</body>
+</html>

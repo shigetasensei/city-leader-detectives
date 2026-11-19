@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>City Leader Detectives: Main Page</title>
+<style>
+body{font-family:system-ui,-apple-system,sans-serif;background:linear-gradient(160deg,#fef6e4,#e0f4ff);margin:0;color:#1d2433;line-height:1.55}
+main{max-width:780px;margin:0 auto;padding:20px}
+h1{font-size:1.9rem;margin:.3em 0}
+h2{font-size:1.3rem;margin:1em 0 .3em;color:#1d4ed8}
+.card{background:#fff;border-radius:18px;padding:18px 20px;margin:12px 0;box-shadow:0 4px 12px rgba(0,0,0,.08)}
+.card p{margin:.4em 0}
+.btn{display:inline-block;padding:12px 18px;border-radius:14px;text-decoration:none;font-weight:700;margin:6px 8px 6px 0;color:#1d2433;box-shadow:0 3px 0 rgba(0,0,0,.15)}
+.b1{background:#ffb703}.b2{background:#06d6a0}.b3{background:#8ecae6}.b4{background:#ffd6e7}.b5{background:#d9c2ff}
+.muted{color:#4a5568;font-size:.98rem}
+/* embedded city map */
+.mapflex{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start;justify-content:center}
+.mapmain{flex:1 1 380px;min-width:0}
+.mapside{flex:1 1 300px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.mapwrap svg{width:100%;height:auto;display:block}
+.sea{fill:#cfe8fb}
+.land{fill:#d8efc2;stroke:#4f8a3c;stroke-width:1.5;stroke-linejoin:round}
+.zoombox{fill:none;stroke:#b45309;stroke-width:2;stroke-dasharray:6 4}
+.pin{cursor:pointer;outline:none}
+.pin.active .head{stroke:#102a43;stroke-width:2.5}
+.pin:focus-visible .head{stroke:#102a43;stroke-width:2.5}
+.lbl{font-size:15px;font-weight:700;fill:#102a43;paint-order:stroke;stroke:#fff;stroke-width:4px;stroke-linejoin:round}
+.seaLbl{font-size:13px;fill:#2b6cb0;font-style:italic}
+.mapcap{font-size:14px;font-weight:700;color:#4a5568;margin:0 0 6px}
+.infobox{background:#f7fbff;border-radius:14px;padding:12px 14px}
+.infobox h2{margin:0 0 6px;font-size:1.2rem}
+.infobox p{margin:6px 0;font-size:1rem;line-height:1.7}
+.legend{display:flex;flex-wrap:wrap;gap:8px}
+.legend button{font:inherit;font-size:15px;font-weight:700;border:3px solid;border-radius:999px;background:#fff;padding:5px 12px;cursor:pointer}
+.legend button.on{color:#fff}
+</style>
+</head>
+<body>
+<main>
+<h1>🕵️ City Leader Detectives</h1>
+<nav class="card" style="padding:12px 14px">
+  <a class="btn b5" href="families.html">📚 For families and teachers</a>
+  <a class="btn b3" href="kobe.html">📍 Kobe</a>
+  <a class="btn b4" href="ashiya.html">📍 Ashiya</a>
+  <a class="btn b2" href="nishinomiya.html">📍 Nishinomiya</a>
+  <a class="btn b1" href="resources.html">📚 Resources</a>
+  <a class="btn" style="background:#c7f9cc" href="https://cool-kind-online.vercel.app" target="_blank" rel="noopener">🔗 Cool & Kind Online</a>
+</nav>
+
+<h1>🗺️ Where are we?</h1>
+
+<div class="card" style="text-align:center">
+  <p class="muted" style="margin:0 0 6px"><b>Where is Hyogo in Japan?</b> (simplified outline, not to scale)</p>
+  <img src="images/japan-hyogo-map.webp" alt="Map of Japan with Hyogo Prefecture highlighted in red" style="width:100%;max-width:420px;height:auto">
+  <p class="muted" style="margin:6px 0 0">Map: <a href="https://commons.wikimedia.org/wiki/File:Map_of_Japan_with_highlight_on_28_Hy%C5%8Dgo_prefecture.svg" target="_blank" rel="noopener">Map of Japan with highlight on Hyogo Prefecture (Wikimedia Commons)</a></p>
+  <p class="muted" style="margin:6px 0 0">Hyogo (red) is in the Kansai region, between Osaka and the Sea of Japan. Scroll down for the detailed Hyogo map.</p>
+  <p class="muted" style="margin:6px 0 0"><a href="https://www.google.com/maps/search/?api=1&query=Hyogo+Prefecture+Japan" target="_blank" rel="noopener">🗺️ Open Hyogo Prefecture in Google Maps</a></p>
+</div>
+
+<div class="card">
+  <p class="muted" style="margin:0 0 10px"><b>Where are the cities?</b> Hyogo Prefecture (rough map, not to scale). Tap a pin to learn about it.</p>
+  <div class="mapflex">
+    <div class="mapmain">
+      <p class="mapcap">Zoomed view (dashed area)</p>
+      <div class="mapwrap">
+        <svg id="zoomMap" viewBox="0 0 400 190" role="img" aria-label="Zoomed map of Kobe, Ashiya and Nishinomiya"></svg>
+      </div>
+      <p class="mapcap">Choose a city</p>
+      <div class="legend" id="legend"></div>
+    </div>
+    <div class="mapside">
+      <div class="infobox" id="info" aria-live="polite"></div>
+    </div>
+  </div>
+</div>
+
+<p class="muted">Pick a city to investigate. Each city has a quote game and a set of mayor questions.</p>
+
+<p class="muted" style="font-size:.9rem;margin-top:24px">This page was made with Claude AI for educational purposes. No information is obtained from the students.</p>
+</main>
+
+<script>
+const cities0 = [
+  { id:"kobe", name:"Kobe", lon:135.1830, lat:34.6913, color:"#e63946",
+    text:"Kobe is the capital of Hyogo Prefecture and its most populous city. It has a large port, and for a long time it has been a harbor town where people and goods from other countries came and went. Fun fact: Kobe is the sixth-largest city in Japan, and its port is home to one of the world's fastest supercomputers." },
+  { id:"ashiya", name:"Ashiya", lon:135.3000, lat:34.7300, color:"#1d70b8",
+    text:"Ashiya is a city between the sea and the mountains (Mount Rokko). It is the smallest city in Hyogo Prefecture by area. Fun fact: you can go from a beach to a mountain trail without leaving the city." },
+  { id:"nishinomiya", name:"Nishinomiya", lon:135.3414, lat:34.7376, color:"#d97706",
+    text:"Nishinomiya is home to Koshien Stadium. The national high school baseball tournament is held there, and many people gather to watch. Fun fact: Koshien is one of the most famous baseball stadiums in Japan." },
+  { id:"portisland", name:"Port Island", lon:135.2149, lat:34.6808, color:"#2a9d8f",
+    text:"海を埋め立ててつくられた人工の島です。ポートアイランドとよばれ、神戸の港の近くにあります。" },
+  { id:"rokko", name:"Rokko Island", lon:135.2540, lat:34.6680, color:"#7c3aed",
+    text:"海を埋め立ててつくられた人工の島です。住宅地やマンションがならぶまちです。" }
+];
+
+const cityPages = {
+  kobe: "kobe.html",
+  ashiya: "ashiya.html",
+  nishinomiya: "nishinomiya.html"
+};
+
+const cities = cities0.filter(c => c.id !== "portisland" && c.id !== "rokko");
+const hyogoMain = [[134.27,35.60],[134.40,35.62],[134.55,35.66],[134.70,35.67],[134.85,35.65],[135.00,35.65],[135.10,35.62],[135.12,35.52],[135.20,35.32],[135.25,35.10],[135.33,34.98],[135.36,34.90],[135.42,34.85],[135.44,34.76],[135.40,34.71],[135.34,34.72],[135.29,34.72],[135.22,34.70],[135.18,34.68],[135.10,34.65],[135.00,34.65],[134.95,34.66],[134.85,34.75],[134.70,34.78],[134.55,34.80],[134.42,34.73],[134.33,34.74],[134.30,34.90],[134.30,35.05],[134.25,35.25],[134.22,35.42]];
+const awaji = [[134.70,34.42],[134.74,34.22],[134.86,34.16],[134.98,34.30],[134.98,34.48],[134.93,34.62],[134.84,34.60],[134.75,34.54]];
+const kobeLand = [[135.10,34.80],[135.44,34.80],[135.44,34.76],[135.40,34.71],[135.34,34.72],[135.29,34.72],[135.22,34.70],[135.18,34.68],[135.10,34.65]];
+const portIsland = [[135.19,34.685],[135.23,34.685],[135.235,34.672],[135.22,34.665],[135.195,34.668]];
+const rokkoIsland = [[135.236,34.680],[135.268,34.680],[135.276,34.663],[135.262,34.655],[135.240,34.657]];
+
+const LON0 = 134.1, LAT0 = 35.8, MK = 246, MKY = 300;
+const mainXY = (lon, lat) => [(lon - LON0) * MK, (LAT0 - lat) * MKY];
+const ZLON0 = 135.10, ZLAT0 = 34.80;
+const zoomXY = (lon, lat) => [(lon - ZLON0) * 1100 + 10, (ZLAT0 - lat) * 1100 + 10];
+
+const pathOf = (pts, proj) =>
+  "M" + pts.map(p => proj(p[0], p[1]).map(v => v.toFixed(1)).join(",")).join("L") + "Z";
+
+const pinSVG = (c, proj, scale, off) => {
+  const [x, y] = proj(c.lon, c.lat);
+  return `
+  <g class="pin" data-id="${c.id}" tabindex="0" role="button" aria-label="${c.name}"
+     transform="translate(${x.toFixed(1)},${y.toFixed(1)}) scale(${scale})">
+    <path class="head" d="M0,0 C-4,-8 -10,-14 -10,-22 A10,10 0 1 1 10,-22 C10,-14 4,-8 0,0 Z"
+          fill="${c.color}" stroke="#fff" stroke-width="1.5"/>
+    <circle cx="0" cy="-22" r="4" fill="#fff"/>
+  </g>
+  <text class="lbl" x="${(x + off.x * scale).toFixed(1)}" y="${(y + off.y * scale).toFixed(1)}" text-anchor="${off.a}">${c.name}</text>`;
+};
+
+const mainOff = { kobe:{x:-14,y:-18,a:"end"}, ashiya:{x:0,y:18,a:"middle"}, nishinomiya:{x:14,y:-6,a:"start"}, portisland:{x:-14,y:14,a:"end"}, rokko:{x:14,y:16,a:"start"} };
+const zoomOff = { kobe:{x:-14,y:8,a:"end"}, ashiya:{x:-14,y:16,a:"end"}, nishinomiya:{x:14,y:-10,a:"start"}, portisland:{x:-10,y:14,a:"end"}, rokko:{x:12,y:4,a:"start"} };
+
+const [zx0, zy0] = mainXY(135.10, 34.80);
+const [zx1, zy1] = mainXY(135.44, 34.65);
+
+const mainMapEl = document.getElementById("mainMap");
+if (mainMapEl) mainMapEl.innerHTML = `
+  <rect x="0" y="0" width="400" height="520" class="sea" rx="12"/>
+  <path class="land" d="${pathOf(hyogoMain, mainXY)}"/>
+  <path class="land" d="${pathOf(awaji, mainXY)}"/>
+  <path class="land" d="${pathOf(portIsland, mainXY)}"/>
+  <path class="land" d="${pathOf(rokkoIsland, mainXY)}"/>
+  <text class="seaLbl" x="170" y="22">Sea of Japan</text>
+  <text class="seaLbl" x="40" y="412">Seto Inland Sea</text>
+  <text class="seaLbl" x="300" y="440">Osaka Bay</text>
+  <rect class="zoombox" x="${zx0.toFixed(1)}" y="${zy0.toFixed(1)}" width="${(zx1 - zx0).toFixed(1)}" height="${(zy1 - zy0).toFixed(1)}"/>
+  ${cities.map(c => pinSVG(c, mainXY, 1, mainOff[c.id])).join("")}
+  <text class="seaLbl" x="6" y="500" style="font-style:normal">N ↑</text>
+`;
+
+document.getElementById("zoomMap").innerHTML = `
+  <rect x="0" y="0" width="400" height="190" class="sea" rx="10"/>
+  <path class="land" d="${pathOf(kobeLand, zoomXY)}"/>
+  <path class="land" d="${pathOf(portIsland, zoomXY)}"/>
+  <path class="land" d="${pathOf(rokkoIsland, zoomXY)}"/>
+  <text class="seaLbl" x="300" y="178">Osaka Bay</text>
+  ${cities.map(c => pinSVG(c, zoomXY, 0.8, zoomOff[c.id])).join("")}
+`;
+
+const info = document.getElementById("info");
+const legend = document.getElementById("legend");
+
+function show(id) {
+  document.querySelectorAll(".pin").forEach(p => p.classList.toggle("active", p.dataset.id === id));
+  document.querySelectorAll("#legend button").forEach(b => {
+    const on = b.dataset.id === id;
+    b.classList.toggle("on", on);
+    b.style.background = on ? b.dataset.color : "#fff";
+  });
+  if (!id) {
+    info.innerHTML = `<h2>Hyogo Prefecture</h2><p>Hyogo is in western Japan. It faces the Sea of Japan to the north and the Seto Inland Sea and Osaka Bay to the south.</p><p><b>Guess!</b> How many cities and towns does Hyogo Prefecture have?</p><div class="legend">${[25,41,60].map(n => `<button onclick="answerQ(this,${n===41},'Hyogo has 41 municipalities: 29 cities and 12 towns.')">${n}</button>`).join("")}</div><p class="muted" style="min-height:1.7em"></p><p><b>Guess!</b> Which is the largest city in Hyogo?</p><div class="legend">${["Ashiya","Kobe","Nishinomiya"].map(n => `<button onclick="answerQ(this,${n==="Kobe"},'Kobe is the capital and the largest city in Hyogo.')">${n}</button>`).join("")}</div><p class="muted" style="min-height:1.7em"></p><p class="muted">Tap a pin to learn about the city.</p>`;
+    return;
+  }
+  const c = cities.find(x => x.id === id);
+  info.innerHTML = `<h2 style="color:${c.color}">📍 ${c.name}</h2><p>${c.text}</p>`;
+  if (cityPages[id]) {
+    info.innerHTML += `<p><a class="btn b3" href="${cityPages[id]}">Open ${c.name} page</a></p>`;
+  }
+}
+
+cities.forEach(c => {
+  const b = document.createElement("button");
+  b.dataset.id = c.id;
+  b.dataset.color = c.color;
+  b.textContent = "📍 " + c.name;
+  b.style.borderColor = c.color;
+  b.style.color = c.color;
+  b.addEventListener("click", () => show(c.id));
+  legend.appendChild(b);
+});
+
+document.querySelectorAll(".pin").forEach(p => {
+  p.addEventListener("click", () => show(p.dataset.id));
+  p.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); show(p.dataset.id); } });
+});
+
+function answerQ(btn, correct, msg) {
+  const fb = btn.parentElement.nextElementSibling;
+  fb.textContent = correct ? "✅ Correct! " + msg : "❌ Not quite. Try again!";
+  fb.style.color = correct ? "#15803d" : "#b45309";
+  fb.style.fontWeight = "700";
+}
+
+show(null);
+</script>
+</body>
+</html>

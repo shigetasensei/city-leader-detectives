@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Quote Detectives: Ashiya</title>
+<style>
+body{font-family:system-ui,-apple-system,sans-serif;background:linear-gradient(160deg,#fef6e4,#e0f4ff);margin:0;color:#1d2433;line-height:1.55}
+main{max-width:780px;margin:0 auto;padding:20px}
+h1{font-size:1.8rem;margin:.3em 0}
+h2{font-size:1.4rem;margin:.3em 0}
+.card{background:#fff;border-radius:18px;padding:20px;margin:14px 0;box-shadow:0 4px 12px rgba(0,0,0,.08)}
+.quote{font-size:1.15rem;font-weight:600}
+.src{font-size:.95rem;margin-top:10px}
+button{font:inherit;font-size:1.1rem;padding:12px 22px;border-radius:14px;border:none;background:#ffb703;color:#1d2433;cursor:pointer;margin:6px 8px 6px 0;font-weight:700;box-shadow:0 3px 0 #d98e00}
+button:active{transform:translateY(2px);box-shadow:none}
+button.alt{background:#8ecae6;box-shadow:0 3px 0 #4a9bc2}
+button.go{background:#06d6a0;box-shadow:0 3px 0 #04a77b}
+button:disabled{opacity:.5;cursor:default;transform:none}
+.good{color:#0a7d4f}
+.bad{color:#c0392b}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.col{background:#fff;border:3px dashed #8ecae6;border-radius:18px;min-height:170px;padding:12px;cursor:pointer}
+.col h3{margin:0 0 8px;font-size:1.05rem}
+.chip{display:block;background:#fff3c4;border:3px solid transparent;border-radius:12px;padding:10px 12px;margin:8px 0;cursor:pointer;font-size:1rem;font-weight:600}
+.chip.sel{border-color:#fb8500;transform:scale(1.02)}
+.chip.right{background:#d8f8e8}
+.chip.wrong{background:#ffd9d3}
+.chip small{display:block;color:#4a5568;font-weight:400;margin-top:4px}
+.hidden{display:none}
+.muted{color:#4a5568;font-size:.98rem}
+.bar{background:#fff;border-radius:99px;height:18px;overflow:hidden;box-shadow:inset 0 1px 3px rgba(0,0,0,.1)}
+.bar > div{height:100%;width:0;background:linear-gradient(90deg,#ffb703,#06d6a0);transition:width .4s}
+.stars{font-size:2rem;letter-spacing:4px}
+.big{font-size:1.4rem;font-weight:800}
+.pop{display:inline-block;animation:pop .5s}
+@keyframes pop{0%{transform:scale(.5)}70%{transform:scale(1.15)}100%{transform:scale(1)}}
+.speak{font-size:1rem;padding:8px 14px}
+a{color:#1d4ed8;font-weight:700}
+.navbtn{display:inline-block;padding:10px 16px;border-radius:14px;text-decoration:none;font-weight:700;margin:4px 6px 4px 0}
+</style>
+</head>
+<body>
+<main>
+
+<section id="intro">
+  <h1>🕵️ Quote Detectives: Ashiya</h1>
+  <p>
+    <a class="navbtn" href="about.html" style="background:#8ecae6;color:#1d2433;box-shadow:0 3px 0 #4a9bc2">📖 About this lesson</a>
+    <a class="navbtn" href="ashiya-questions.html" style="background:#ffb703;color:#1d2433;box-shadow:0 3px 0 #d98e00">💬 Ask Mayor Takashima</a>
+    <a class="navbtn" href="nishinomiya-quests.html" style="background:#06d6a0;color:#1d2433;box-shadow:0 3px 0 #04a77b">🗺️ Learn about Mayor Ishii (Nishinomiya)</a>
+    <a class="navbtn" href="nishinomiya-quote.html" style="background:#06d6a0;color:#1d2433;box-shadow:0 3px 0 #04a77b">🕵️ Quote Detectives: Nishinomiya</a>
+    <a class="navbtn" href="ashiya-questions.html" style="background:#ffd6e7;color:#1d2433;box-shadow:0 3px 0 #d6457f">📋 Questions for Mayor Takashima</a>
+  </p>
+  <div class="card">
+    <p class="big">Mission 1: Real quote or summary?</p>
+    <p>Read each card. Is it the mayor's <b>real words</b>, or a <b>summary</b> written about what he said? Click the clue link to check the source.</p>
+    <p class="big">Mission 2: Sort the questions!</p>
+    <p>Can we <b>find the answer online</b>, or can only the mayor tell us?</p>
+    <p class="muted">Mayor Ryōsuke Takashima (髙島崚輔) has been mayor of Ashiya since May 2023. Japanese quotes have rough English translations by the site author; a Japanese speaker should check them.</p>
+    <p>More from the mayor: <a href="https://note.com/takashimaryosuke" target="_blank" rel="noopener">his note blog</a> for photos!</p>
+    <button class="go" id="startBtn">🚀 Start the mission!</button>
+  </div>
+</section>
+
+<section id="roundA" class="hidden">
+  <h2>Mission 1: Quote or summary?</h2>
+  <div class="bar"><div id="barA"></div></div>
+  <p class="muted">Card <span id="qNum"></span> of 6 · ⭐ <span id="scoreA">0</span></p>
+  <div class="card">
+    <p class="quote" id="qText"></p>
+    <button class="alt speak" id="speakA">🔊 Listen</button>
+    <p class="muted" id="qEn"></p>
+    <p class="src">🔎 Clue: <a id="qSrc" href="#" target="_blank" rel="noopener">open source</a> (<span id="qSrcName"></span>)</p>
+    <p class="src">🔑 Look for: <b id="qKey"></b></p>
+  </div>
+  <div>
+    <button id="btnQuote">💬 Real quote!</button>
+    <button class="alt" id="btnSummary">📝 Summary</button>
+  </div>
+  <div id="feedback" class="card hidden"></div>
+  <button class="go hidden" id="nextA">Next ➡️</button>
+</section>
+
+<section id="roundB" class="hidden">
+  <h2>Mission 2: Sort the questions!</h2>
+  <p class="muted">👆 Tap a question, then tap a box. Tap a question in a box to move it back.</p>
+  <button class="alt speak" id="speakB">🔊 Read the selected question</button>
+  <div id="pool"></div>
+  <div class="cols">
+    <div class="col" data-col="online"><h3>🌐 Can find online</h3><div class="items"></div></div>
+    <div class="col" data-col="leader"><h3>🎤 Only the leader can tell us</h3><div class="items"></div></div>
+  </div>
+  <button class="go" id="checkB">✅ Check my answers</button>
+  <div id="resultB" class="card hidden"></div>
+</section>
+
+<section id="done" class="hidden">
+  <div class="card" style="text-align:center">
+    <h2>🎉 Mission complete!</h2>
+    <p class="stars" id="stars"></p>
+    <p class="big" id="finalScore"></p>
+    <p id="badge"></p>
+    <p>🧠 Exit ticket: One thing AI can get wrong is ___. I would check it by ___.</p>
+    <button class="go" id="restart">🔁 Play again</button>
+  </div>
+</section>
+
+<p><a href="index.html" style="display:inline-block;background:#ffb703;color:#1d2433;padding:10px 16px;border-radius:14px;text-decoration:none;font-weight:700">🏠 Back to the main page</a></p>
+<p class="muted" style="font-size:.9rem;margin-top:24px">This page was made with Claude AI for educational purposes. No information is obtained from the students.</p>
+</main>
+<script>
+const cards = [
+  {kind: 'quote', text: "「市政運営で大事にしたいのは「対話」です。」",
+   en: "(Rough translation) Dialogue is what I want to value most in running city government.",
+   src: "https://www.takashimaryosuke.jp/", srcName: "Official website, greeting section"},
+  {kind: 'summary', text: "In his first year, the mayor said he visited more than 300 events and facilities, and dialogue sessions helped him hear problems City Hall could not see.",
+   en: "",
+   src: "https://www.kobe-np.co.jp/news/hanshin/202404/0017598578.shtml", srcName: "Kobe Shimbun, May 2024 interview"},
+  {kind: 'quote', text: "「私たちの芦屋を、世界一住み続けやすい街へ。」",
+   en: "(Rough translation) Our Ashiya: the most livable city in the world.",
+   src: "https://www.takashimaryosuke.jp/", srcName: "Official website, site tagline"},
+  {kind: 'summary', text: "The mayor described his first year as a time of sowing seeds, a period of listening before carrying out policies.",
+   en: "",
+   src: "https://www.kobe-np.co.jp/news/hanshin/202404/0017598578.shtml", srcName: "Kobe Shimbun, May 2024 interview"},
+  {kind: 'quote', text: "「世界トップクラスの魅力と可能性がある」",
+   en: "(Rough translation) Ashiya has world-class charm and potential.",
+   src: "https://www.takashimaryosuke.jp/#thoughts", srcName: "Official website, 芦屋への想い section"},
+  {kind: 'summary', text: "The mayor said the next four years would decide the results of his term, and he asked citizens and staff to work with him.",
+   en: "",
+   src: "https://www.kobe-np.co.jp/news/hanshin/202304/0016280195.shtml", srcName: "Kobe Shimbun, 24 April 2023, after the election"}
+];
+
+const clueData = [
+  {key: "対話", jp: "市政運営で大事にしたいのは「対話」です。", enjp: "Dialogue is what I want to value most in running city government."},
+  {key: "300", jp: "就任後に訪問したイベントや施設は300を超え", enjp: "Since taking office, I visited more than 300 events and facilities."},
+  {key: "世界一", jp: "私たちの芦屋を、世界一住み続けやすい街へ。", enjp: "Our Ashiya: the most livable city in the world."},
+  {key: "種まき", jp: "種まきの1年でした", enjp: "It was a year of sowing seeds."},
+  {key: "魅力", jp: "世界トップクラスの魅力と可能性がある", enjp: "Ashiya has world-class charm and potential."},
+  {key: "4年間", jp: "これから4年間の結果が全て", enjp: "The results of the next four years are everything."}
+];
+const keyEn = ["dialogue", "300", "the world's best", "sowing seeds", "charm", "four years"];
+const srcTypes = ["Official website (the mayor's own site)", "Newspaper, online edition (Kobe Shimbun)", "Official website (the mayor's own site)", "Newspaper, online edition (Kobe Shimbun)", "Official website (the mayor's own site)", "Newspaper, online edition (Kobe Shimbun)"];
+cards.forEach((c, i) => { Object.assign(c, clueData[i]); c.keyEn = keyEn[i]; c.srcType = srcTypes[i]; });
+
+const questions = [
+  {q: "What is Ashiya's population? 🏙️", a: "online", why: "The city publishes population numbers."},
+  {q: "What is the city's budget for schools this year? 🏫", a: "online", why: "City budgets are public records."},
+  {q: "Where is Ashiya City Hall? 🗺️", a: "online", why: "Addresses are listed publicly."},
+  {q: "When did the city council last meet? 📅", a: "online", why: "Public records show meeting dates."},
+  {q: "Why did you decide to run for mayor? 🤔", a: "leader", why: "Only the mayor knows his own reasons."},
+  {q: "What was the hardest decision you made this year? 😰", a: "leader", why: "Only he can describe how it felt."},
+  {q: "Which problem do you wish young people understood better? 🧒", a: "leader", why: "His opinion has to come from an interview."},
+  {q: "What did you feel when a project you supported was approved? 🎉", a: "leader", why: "Only he knows how he felt."}
+];
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+function show(id) {
+  ['intro', 'roundA', 'roundB', 'done'].forEach(s =>
+    document.getElementById(s).classList.toggle('hidden', s !== id));
+}
+
+// Read aloud (uses the device's built-in English voices; quality depends on the device)
+function speakText(text) {
+  if (!('speechSynthesis' in window)) return false;
+  try {
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'en-US';
+    u.rate = 0.92;
+    const vs = speechSynthesis.getVoices();
+    const v = vs.find(x => x.lang.toLowerCase().startsWith('en') && /natural|enhanced|premium|neural/i.test(x.name))
+      || vs.find(x => x.lang.toLowerCase().startsWith('en'));
+    if (v) u.voice = v;
+    speechSynthesis.speak(u);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+document.getElementById('speakA').onclick = () => {
+  if ('speechSynthesis' in window && speechSynthesis.speaking) { speechSynthesis.cancel(); return; }
+  const b = document.getElementById('speakA');
+  if (!speakText(order[idxA].en ? order[idxA].en.replace(/^\(Rough translation\)\s*/, '') : order[idxA].text)) b.textContent = '🔇 Read-aloud is not available here';
+};
+document.getElementById('speakB').onclick = () => {
+  if ('speechSynthesis' in window && speechSynthesis.speaking) { speechSynthesis.cancel(); return; }
+  const b = document.getElementById('speakB');
+  const q = qs.find(x => x.id === sel);
+  if (!q) { b.textContent = '👆 Tap a question first, then press me'; return; }
+  const clean = q.q.replace(/[\u{1F000}-\u{1FAFF}☀-➿️]/gu, '').trim();
+  if (!speakText(clean)) b.textContent = '🔇 Read-aloud is not available here';
+};
+
+// Mission 1
+let order = [], idxA = 0, scoreAcount = 0, answeredA = false;
+const btnQuote = document.getElementById('btnQuote');
+const btnSummary = document.getElementById('btnSummary');
+
+function showA() {
+  const c = order[idxA];
+  document.getElementById('qNum').textContent = idxA + 1;
+  document.getElementById('scoreA').textContent = scoreAcount;
+  document.getElementById('barA').style.width = (idxA / order.length * 100) + '%';
+  document.getElementById('qText').textContent = c.text;
+  document.getElementById('qEn').textContent = c.en;
+  const a = document.getElementById('qSrc');
+  a.href = c.src;
+  a.textContent = 'open source';
+  document.getElementById('qSrcName').textContent = c.srcName;
+  document.getElementById('qKey').textContent = c.key + ' (' + c.keyEn + ')';
+  document.getElementById('feedback').classList.add('hidden');
+  document.getElementById('nextA').classList.add('hidden');
+  btnQuote.disabled = false;
+  btnSummary.disabled = false;
+  answeredA = false;
+}
+function answerA(guessQuote) {
+  if (answeredA) return;
+  answeredA = true;
+  const c = order[idxA];
+  const correct = guessQuote === (c.kind === 'quote');
+  if (correct) scoreAcount++;
+  document.getElementById('scoreA').textContent = scoreAcount;
+  btnQuote.disabled = true;
+  btnSummary.disabled = true;
+  const fb = document.getElementById('feedback');
+  fb.innerHTML =
+    '<p class="big ' + (correct ? 'good' : 'bad') + '"><span class="pop">' + (correct ? '🌟 Correct!' : '🙈 Oops, not quite!') + '</span></p>' +
+    '<p>' + (c.kind === 'quote' ? 'This is a real quote from the mayor.' : 'This is a summary someone wrote about what the mayor said.') + '</p>' +
+    '<p>🔎 Open the clue and compare the words with the card.</p>' +
+    '<p>📖 <b>Source sentence:</b> ' + c.jp + '</p>' +
+    '<p><i>English: ' + c.enjp + '</i></p>' +
+    '<p>🗞️ <b>Source type:</b> ' + c.srcType + '</p>';
+  fb.classList.remove('hidden');
+  const next = document.getElementById('nextA');
+  next.textContent = idxA < order.length - 1 ? 'Next ➡️' : 'Mission 2 ➡️';
+  next.classList.remove('hidden');
+}
+btnQuote.onclick = () => answerA(true);
+btnSummary.onclick = () => answerA(false);
+document.getElementById('nextA').onclick = () => {
+  idxA++;
+  if (idxA < order.length) showA(); else startB();
+};
+document.getElementById('startBtn').onclick = () => {
+  order = shuffle([...cards]);
+  idxA = 0;
+  scoreAcount = 0;
+  showA();
+  show('roundA');
+};
+
+// Mission 2
+let qs = [], place = {}, sel = null, checked = false, scoreB = 0;
+
+function startB() {
+  qs = shuffle(questions.map((q, i) => ({...q, id: i})));
+  place = {};
+  sel = null;
+  checked = false;
+  scoreB = 0;
+  document.getElementById('resultB').classList.add('hidden');
+  const btn = document.getElementById('checkB');
+  btn.disabled = false;
+  btn.textContent = '✅ Check my answers';
+  btn.onclick = checkB;
+  show('roundB');
+  renderB();
+}
+function makeChip(q) {
+  const d = document.createElement('div');
+  d.className = 'chip';
+  if (sel === q.id) d.classList.add('sel');
+  d.textContent = q.q;
+  if (checked) {
+    const ok = place[q.id] === q.a;
+    d.classList.add(ok ? 'right' : 'wrong');
+    const s = document.createElement('small');
+    s.textContent = (ok ? '⭐ Nice! ' : '🙈 Try again: ') + q.why;
+    d.appendChild(s);
+  } else {
+    d.onclick = () => {
+      if (place[q.id] !== undefined) {
+        delete place[q.id];
+        sel = null;
+      } else {
+        sel = sel === q.id ? null : q.id;
+      }
+      renderB();
+    };
+  }
+  return d;
+}
+function renderB() {
+  const pool = document.getElementById('pool');
+  pool.innerHTML = '';
+  document.querySelectorAll('.col .items').forEach(el => el.innerHTML = '');
+  qs.forEach(q => {
+    const el = makeChip(q);
+    if (place[q.id] === undefined) {
+      pool.appendChild(el);
+    } else {
+      document.querySelector('.col[data-col="' + place[q.id] + '"] .items').appendChild(el);
+    }
+  });
+}
+document.querySelectorAll('.col').forEach(col => {
+  col.onclick = () => {
+    if (checked || sel === null) return;
+    place[sel] = col.dataset.col;
+    sel = null;
+    renderB();
+  };
+});
+function checkB() {
+  const res = document.getElementById('resultB');
+  if (Object.keys(place).length < qs.length) {
+    res.innerHTML = '<p>📦 Put every question in a box first!</p>';
+    res.classList.remove('hidden');
+    return;
+  }
+  checked = true;
+  scoreB = qs.filter(q => place[q.id] === q.a).length;
+  renderB();
+  res.innerHTML = '<p class="big">Mission 2 score: ' + scoreB + ' / ' + qs.length + ' 🌟</p>' +
+    '<p>Facts you can look up online go in one box. Feelings, reasons and opinions need a real conversation with the mayor.</p>';
+  res.classList.remove('hidden');
+  const btn = document.getElementById('checkB');
+  btn.textContent = '🏁 See my stars';
+  btn.onclick = showDone;
+}
+function showDone() {
+  const total = scoreAcount + scoreB;
+  const max = cards.length + qs.length;
+  const pct = total / max;
+  const stars = pct >= 0.85 ? 5 : pct >= 0.65 ? 4 : pct >= 0.45 ? 3 : pct >= 0.25 ? 2 : 1;
+  document.getElementById('stars').textContent = '⭐'.repeat(stars) + '☆'.repeat(5 - stars);
+  document.getElementById('finalScore').textContent =
+    'Mission 1: ' + scoreAcount + ' / ' + cards.length + ' · Mission 2: ' + scoreB + ' / ' + qs.length;
+  const badges = ['🌱 Quote Explorer', '🔍 Clue Finder', '🕵️ Quote Detective', '🏆 Master Detective', '👑 Super Detective'];
+  document.getElementById('badge').textContent = 'Your badge: ' + badges[stars - 1];
+  show('done');
+}
+document.getElementById('restart').onclick = () => show('intro');
+</script>
+</body>
+</html>

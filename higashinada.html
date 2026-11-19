@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Know: Web Search Quiz (Higashinada Ward)</title>
+<style>
+body{font-family:system-ui,-apple-system,sans-serif;background:linear-gradient(160deg,#fef6e4,#e0f4ff);margin:0;color:#1d2433;line-height:1.7}
+main{max-width:720px;margin:0 auto;padding:20px}
+h1{font-size:1.7rem;margin:.3em 0;color:#1d4ed8}
+.card{background:#fff;border-radius:18px;padding:18px 20px;margin:12px 0;box-shadow:0 4px 12px rgba(0,0,0,.08)}
+.opt{display:block;width:100%;text-align:left;font:inherit;font-size:1.05rem;padding:12px 14px;margin:8px 0;border:2px solid #cbd5e1;border-radius:12px;background:#f8fafc;cursor:pointer}
+.opt:hover{border-color:#1d4ed8}
+.opt.correct{border-color:#15803d;background:#dcfce7}
+.opt.wrong{border-color:#b91c1c;background:#fee2e2}
+.opt:disabled{cursor:default}
+.where{background:#fff7e0;border-radius:12px;padding:10px 12px;margin:10px 0}
+.feedback{margin-top:10px;padding:10px 12px;border-radius:10px;background:#f7fbff}
+.btn{display:inline-block;padding:12px 18px;border-radius:14px;text-decoration:none;font-weight:700;margin:6px 8px 6px 0;color:#1d2433;box-shadow:0 3px 0 rgba(0,0,0,.15);border:0;font:inherit;cursor:pointer}
+.b1{background:#ffb703}.b3{background:#8ecae6}
+.muted{color:#4a5568;font-size:.95rem}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<main>
+<h1>🔍 Know: Web Search Quiz (Higashinada Ward)</h1>
+<button id="mute" class="btn b3" style="margin:0 0 10px">🔊 Sound on</button>
+<p class="muted">Read the question. First think about <b>where</b> you would find the answer (what kind of page). Then choose one of the three answers. After you choose, you will see the answer and where it appears.</p>
+
+<div class="card">
+  <h2 style="margin:0 0 6px;color:#102a43;font-size:1.2rem">📍 Find Higashinada Ward on the map</h2>
+  <p class="muted">Higashinada Ward is at the east end of Kobe. Look at where it sits between Osaka Bay and Mount Rokko.</p>
+  <svg viewBox="0 0 400 220" width="100%" role="img" aria-label="Simple map of Kobe showing Higashinada Ward at the east end, between Osaka Bay and Mount Rokko" style="border-radius:12px">
+    <rect x="0" y="0" width="400" height="220" fill="#cfe8fb"/>
+    <polygon points="0,0 400,0 400,40 330,70 300,120 210,140 120,150 40,140 0,120" fill="#d8efc2" stroke="#4f8a3c" stroke-width="1.5"/>
+    <polygon points="250,70 330,70 360,85 385,105 390,125 340,135 290,140 255,125 245,100" fill="#ffd166" fill-opacity="0.9" stroke="#b45309" stroke-width="2"/>
+    <text x="300" y="108" font-size="13" font-weight="700" text-anchor="middle" fill="#102a43">Higashinada</text>
+    <text x="300" y="122" font-size="11" text-anchor="middle" fill="#102a43">Ward</text>
+    <text x="150" y="30" font-size="12" font-style="italic" fill="#4b5563">Mount Rokko</text>
+    <text x="150" y="195" font-size="12" font-style="italic" fill="#2b6cb0">Osaka Bay</text>
+    <text x="395" y="60" font-size="11" text-anchor="end" fill="#4b5563">Osaka →</text>
+    <text x="200" y="100" font-size="12" fill="#4b5563">Kobe City</text>
+  </svg>
+  <p class="muted" style="font-size:.85rem">Simple schematic, not to scale.</p>
+  <p class="muted"><a href="https://www.google.com/maps/search/?api=1&query=Higashinada+Ward+Kobe" target="_blank" rel="noopener">Open in Google Maps</a></p>
+</div>
+
+<div id="quiz"></div>
+
+<div class="card hidden" id="result">
+  <h2 style="margin:0 0 6px;color:#1d4ed8">Your score</h2>
+  <p id="score" style="font-size:1.2rem;font-weight:700"></p>
+  <p id="comment"></p>
+  <button class="btn b1" id="retry">Try again</button>
+</div>
+
+<a class="btn b3" href="index.html">🗺️ Back to the main page</a>
+<p class="muted" style="font-size:.9rem;margin-top:24px">This page was made with Claude AI for educational purposes. No information is obtained from the students.</p>
+</main>
+
+<script>
+const questions = [
+  {
+    q: "Where in Kobe is Higashinada Ward?",
+    where: "Think: Which page would show a map or an overview of the city's wards?",
+    choices: ["At the east end of the city", "At the west end of the city", "In the center of the city"],
+    answer: 0,
+    explain: "Higashinada Ward is at the east end of Kobe, between Osaka Bay and Mount Rokko.",
+    found: "This fact is on a city map or a Kobe City overview page. Look for the ward's position on the map."
+  },
+  {
+    q: "About how many people live in Higashinada Ward? (as of February 1, 2024)",
+    where: "Think: Which kind of page gives official population numbers? Where would you look for the date?",
+    choices: ["About 210,000 people", "About 21,000 people", "About 2,100,000 people"],
+    answer: 0,
+    explain: "The population was 210,232 as of February 1, 2024.",
+    found: "This number is in an official Kobe City document. Look for the date next to the number. A number without a date may be old."
+  },
+  {
+    q: "Is there a 'Higashi Ward' (東区) in Kobe?",
+    where: "Think: Which official page lists all of Kobe's wards? What wards does it show near Higashinada?",
+    choices: ["Yes, there is a Higashi Ward", "No. Kobe has Higashinada Ward and Nada Ward, not Higashi Ward", "Yes, but it is only a name on old maps"],
+    answer: 1,
+    explain: "Kobe does not have a Higashi Ward. Higashinada and Nada are two different wards next to each other.",
+    found: "The list of wards is on the official Kobe City website. Mixing up 'Higashinada' and 'Nada' is a common search mistake."
+  },
+  {
+    q: "Which area in the south of Higashinada Ward is known for sake-making?",
+    where: "Think: Which page would explain local history or traditional industries?",
+    choices: ["Uozaki and Mikage districts", "Rokko district", "Tarumi district"],
+    answer: 0,
+    explain: "Uozaki and Mikage are two of the Nada Gogo areas, and they still have sake breweries today.",
+    found: "This is on local history or culture pages about the Nada Gogo sake area. Look for the word 'Nada Gogo' (灘五郷)."
+  },
+  {
+    q: "Which source is the most trustworthy for facts about Higashinada Ward?",
+    where: "Think: Which page has a clear author, a date, and a web address you can trust?",
+    choices: ["A shopping site with lots of ads", "The official Kobe City website (city.kobe.lg.jp)", "A personal blog with no date"],
+    answer: 1,
+    explain: "Official government websites have a clear author, usually show a date, and their addresses end in .lg.jp.",
+    found: "Check three things: who wrote it, when it was updated, and whether the web address is official."
+  }
+];
+
+let soundOn = true;
+let audioCtx = null;
+function tone(freq, start, dur, type = "sine", vol = 0.2) {
+  if (!soundOn) return;
+  try {
+    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    const t = audioCtx.currentTime + start;
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.type = type;
+    o.frequency.setValueAtTime(freq, t);
+    g.gain.setValueAtTime(vol, t);
+    g.gain.exponentialRampToValueAtTime(0.001, t + dur);
+    o.connect(g);
+    g.connect(audioCtx.destination);
+    o.start(t);
+    o.stop(t + dur);
+  } catch (e) {}
+}
+function playCorrect() { tone(660, 0, 0.15); tone(880, 0.12, 0.25); }
+function playWrong() { tone(220, 0, 0.3, "sawtooth", 0.12); tone(180, 0.18, 0.3, "sawtooth", 0.12); }
+function playFanfare() { [523, 659, 784, 1047].forEach((f, i) => tone(f, i * 0.15, 0.35, "triangle", 0.25)); }
+
+const QUIZ_AUDIO = [
+  "/_blob/b0bcfc43265565f26a422d150a80416e",
+  "/_blob/d391299b5bf3c034750e5472d340a4fd",
+  "/_blob/11f1a33c35578ae0de611386ff8da77a",
+  "/_blob/4a9094d193e8044b2c5b9153428eb6f7",
+  "/_blob/72f2bfa1ed8d25445b499656d9384745"
+];
+let quizClip = null;
+function playQ(btn) {
+  if (quizClip && !quizClip.paused) { quizClip.pause(); quizClip = null; btn.textContent = "🔊 Listen to this question"; return; }
+  quizClip = new Audio(QUIZ_AUDIO[current]);
+  btn.textContent = "⏹ Stop";
+  quizClip.onended = () => { btn.textContent = "🔊 Listen to this question"; };
+  quizClip.play();
+}
+let current = 0, score = 0;
+const quiz = document.getElementById("quiz");
+const result = document.getElementById("result");
+
+function render() {
+  if (current >= questions.length) {
+    quiz.innerHTML = "";
+    result.classList.remove("hidden");
+    playFanfare();
+    document.getElementById("score").textContent = `${score} out of ${questions.length} correct`;
+    document.getElementById("comment").textContent =
+      score === questions.length ? "Excellent! You can tell where good information comes from." :
+      score >= 3 ? "Well done. Read the explanations for the questions you missed." :
+      "Read the explanations, then try again.";
+    return;
+  }
+  const item = questions[current];
+  quiz.innerHTML = `
+    <div class="card">
+      <p class="muted">Question ${current + 1} of ${questions.length}</p>
+      <button class="btn b3" style="margin:0 0 10px" onclick="playQ(this)">🔊 Listen to this question</button>
+      <h2 style="margin:.2em 0 .4em;color:#102a43;font-size:1.25rem">${item.q}</h2>
+      <div class="where"><b>🔎 Where would you look?</b><br>${item.where}</div>
+      <div id="choices"></div>
+      <div id="feedback"></div>
+    </div>`;
+  const box = document.getElementById("choices");
+  item.choices.forEach((text, i) => {
+    const b = document.createElement("button");
+    b.className = "opt";
+    b.textContent = `${["A", "B", "C"][i]}. ${text}`;
+    b.addEventListener("click", () => choose(i));
+    box.appendChild(b);
+  });
+}
+
+function choose(i) {
+  const item = questions[current];
+  document.querySelectorAll(".opt").forEach((b, idx) => {
+    b.disabled = true;
+    if (idx === item.answer) b.classList.add("correct");
+    if (idx === i && i !== item.answer) b.classList.add("wrong");
+  });
+  if (i === item.answer) { score++; playCorrect(); } else { playWrong(); }
+  document.getElementById("feedback").innerHTML = `
+    <div class="feedback">
+      <p><b>${i === item.answer ? "Correct!" : "Not quite."}</b> The answer is: "${item.choices[item.answer]}"</p>
+      <p>${item.explain}</p>
+      <p><b>📄 Where this appears:</b> ${item.found}</p>
+      <button class="btn b1" id="next">${current + 1 < questions.length ? "Next question" : "See my score"}</button>
+    </div>`;
+  document.getElementById("next").addEventListener("click", () => { current++; render(); });
+}
+
+document.getElementById("mute").addEventListener("click", e => {
+  soundOn = !soundOn;
+  e.target.textContent = soundOn ? "🔊 Sound on" : "🔇 Sound off";
+});
+
+document.getElementById("retry").addEventListener("click", () => {
+  current = 0; score = 0;
+  result.classList.add("hidden");
+  render();
+});
+
+render();
+</script>
+</body>
+</html>
