@@ -1,0 +1,81 @@
+/* Display options: dark/light mode and an easy-to-read font */
+:root{color-scheme:light}
+html.a11y-dark{color-scheme:dark}
+
+/* ---- Easy-to-read font (Atkinson Hyperlegible) ---- */
+html.a11y-font body,html.a11y-font button,html.a11y-font input,html.a11y-font select,html.a11y-font textarea,
+html.a11y-font h1,html.a11y-font h2,html.a11y-font h3,html.a11y-font p,html.a11y-font li,html.a11y-font td,html.a11y-font th,html.a11y-font a,html.a11y-font span,html.a11y-font div{
+  font-family:'Atkinson Hyperlegible','Atkinson Hyperlegible Next',system-ui,-apple-system,'Segoe UI',sans-serif!important}
+html.a11y-font body{letter-spacing:.01em}
+
+/* ---- Dark mode ---- */
+html.a11y-dark body{background:linear-gradient(160deg,#0f172a,#1e293b)!important;background-attachment:fixed;color:#e8edf5!important}
+html.a11y-dark h1,html.a11y-dark h2,html.a11y-dark h3{color:#f1f5f9!important}
+html.a11y-dark h1{color:#93c5fd!important}
+html.a11y-dark .muted,html.a11y-dark .src{color:#b6c2d4!important}
+html.a11y-dark a{color:#93c5fd}
+html.a11y-dark a.btn,html.a11y-dark button.btn{color:#1d2433}
+html.a11y-dark .card,html.a11y-dark nav.card,
+html.a11y-dark [style*="background:#fff;"],html.a11y-dark [style*="background:#fff\""],html.a11y-dark [style*="background:white"]{background:#1f2a3d!important;color:#e8edf5!important}
+html.a11y-dark .card *{border-color:inherit}
+/* pastel panels keep their light color, so their text stays dark (cards themselves go dark) */
+html.a11y-dark :is([style*="background:#f"],[style*="background:linear-gradient"],[style*="background:#d"],[style*="background:#e"]):not(.card){color:#1d2433}
+html.a11y-dark :is([style*="background:#f"],[style*="background:linear-gradient"],[style*="background:#d"],[style*="background:#e"]):not(.card) :is(h1,h2,h3,p,li,b,i,span,small,div,mark){color:#1d2433!important}
+html.a11y-dark :is([style*="background:#f"],[style*="background:linear-gradient"]):not(.card) a{color:#1d4ed8!important}
+html.a11y-dark [style*="background:#fff;"] .muted,html.a11y-dark .card .muted{color:#b6c2d4!important}
+html.a11y-dark .card h2,html.a11y-dark .card h3{color:#f1f5f9!important}
+/* colored chips and panels made with classes */
+html.a11y-dark mark{background:#fde68a!important;color:#1d2433!important}
+html.a11y-dark :is(.tool,.opt,.bk,.btn,.g button,button.go,.tag,.q,.lv,.row>div,.stage .card-now){color:#1d2433}
+html.a11y-dark .lv *,html.a11y-dark .row>div *{color:#1d2433!important}
+html.a11y-dark .stage,html.a11y-dark .stage h2{background:#1f2a3d!important;color:#f1f5f9!important}
+html.a11y-dark .stage .hud,html.a11y-dark .stage p,html.a11y-dark .stage .msg{color:#e8edf5}
+html.a11y-dark .bk *,html.a11y-dark .opt,html.a11y-dark .card-now{color:#1d2433!important}
+html.a11y-dark input,html.a11y-dark textarea,html.a11y-dark select{background:#0f172a;color:#e8edf5;border-color:#475569}
+html.a11y-dark table{color:#e8edf5}
+html.a11y-dark th,html.a11y-dark td{border-color:#334155!important}
+html.a11y-dark th{background:#273449!important;color:#f1f5f9!important}
+html.a11y-dark td{background:transparent!important}
+html.a11y-dark svg{background:#f8fafc;border-radius:14px}
+html.a11y-dark img{background:#f8fafc}
+html.a11y-dark ::placeholder{color:#94a3b8}
+
+/* ---- The display button ---- */
+.a11y-fab{position:fixed;right:12px;bottom:12px;z-index:9999;font-family:system-ui,sans-serif}
+.a11y-fab>button{font:inherit;font-weight:800;font-size:1rem;border:3px solid #1d4ed8;background:#fff;color:#1d2433;border-radius:999px;padding:10px 16px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.25)}
+.a11y-fab>button:focus-visible,.a11y-panel button:focus-visible{outline:4px solid #f59e0b;outline-offset:2px}
+.a11y-panel{position:absolute;right:0;bottom:56px;width:min(290px,86vw);background:#fff;color:#1d2433;border:3px solid #1d4ed8;border-radius:18px;padding:14px 16px;box-shadow:0 8px 24px rgba(0,0,0,.3);line-height:1.5}
+.a11y-panel[hidden]{display:none}
+.a11y-panel h2{font-size:1.05rem;margin:0 0 6px;color:#1d2433!important}
+.a11y-panel .grp{margin:0 0 12px}
+.a11y-panel .lab{font-weight:800;font-size:.95rem;margin:0 0 4px;color:#1d2433}
+.a11y-panel .opts{display:flex;gap:6px;flex-wrap:wrap}
+.a11y-panel .opts button{font:inherit;font-weight:700;font-size:.95rem;border:2px solid #cbd5e1;background:#fff;color:#1d2433;border-radius:12px;padding:8px 12px;cursor:pointer}
+.a11y-panel .opts button[aria-pressed="true"]{background:#dbeafe;border-color:#1d4ed8}
+.a11y-panel .x{display:block;width:100%;font:inherit;font-weight:700;border:2px solid #1d4ed8;background:#1d4ed8;color:#fff;border-radius:12px;padding:8px;cursor:pointer}
+html.a11y-dark .a11y-fab>button{background:#e8edf5}
+@media print{.a11y-fab{display:none}}
+
+/* tables */
+html.a11y-dark table{background:#1f2a3d!important;color:#e8edf5!important}
+html.a11y-dark tr{border-color:#334155!important}
+html.a11y-dark td[data-label]::before{color:#b6c2d4!important}
+html.a11y-dark thead th{background:#273449!important}
+
+/* page-specific light surfaces */
+html.a11y-dark{background:#0f172a}
+html.a11y-dark body{background-repeat:no-repeat!important;min-height:100vh}
+html.a11y-dark :is(.intro,.quest,.stage,.col,.infobox):not([style*="background:"]){background:#1f2a3d!important;color:#e8edf5!important}
+html.a11y-dark :is(.intro,.quest,.col,.infobox):not([style*="background:"]) :is(h1,h2,h3){color:#f1f5f9!important}
+html.a11y-dark :is(.say,.opt,.where,.feedback,.side,.found,.step,.chip,.q2,.row>div,.l1,.l2,.l3,.l4),
+html.a11y-dark :is(.say,.opt,.where,.feedback,.side,.found,.step,.chip,.q2,.row>div,.l1,.l2,.l3,.l4) *{color:#1d2433!important}
+html.a11y-dark :is(.say,.where,.feedback,.side){border-radius:14px}
+html.a11y-dark button:not(.a11y-fab button):not(.a11y-panel button){color:#1d2433}
+html.a11y-dark .a11y-panel,.a11y-panel *{color:#1d2433}
+html.a11y-dark .a11y-panel .x{color:#fff}
+
+html.a11y-dark [style*="background:#fff;"] :is(h1,h2,h3){color:#f1f5f9!important}
+html.a11y-dark .quest .lore,html.a11y-dark .intro .note,html.a11y-dark .intro .muted{color:#b6c2d4!important}
+html.a11y-dark .quest h2{color:#93c5fd!important}
+html.a11y-dark .reward{color:#6ee7b7!important}
+html.a11y-dark .step a{color:#1d4ed8!important}
