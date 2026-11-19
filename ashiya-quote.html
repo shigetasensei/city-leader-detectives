@@ -190,7 +190,17 @@ function speakText(text) {
     return false;
   }
 }
+const AUD_CARDS = ['audio/ashiya-card1.mp3','audio/ashiya-card2.mp3','audio/ashiya-card3.mp3','audio/ashiya-card4.mp3','audio/ashiya-card5.mp3','audio/ashiya-card6.mp3'];
 document.getElementById('speakA').onclick = () => {
+  const c = order[idxA];
+  const k = cards.indexOf(c);
+  if (AUD_CARDS[k]) {
+    if (window._cardAud && !window._cardAud.paused) { window._cardAud.pause(); window._cardAud = null; return; }
+    window._cardAud = new Audio(AUD_CARDS[k]);
+    window._cardAud.onerror = () => { const t = order[idxA].en ? order[idxA].en.replace(/^\(Rough translation\)\s*/, '') : order[idxA].text; speakText(t); };
+    window._cardAud.play();
+    return;
+  }
   if ('speechSynthesis' in window && speechSynthesis.speaking) { speechSynthesis.cancel(); return; }
   const b = document.getElementById('speakA');
   if (!speakText(order[idxA].en ? order[idxA].en.replace(/^\(Rough translation\)\s*/, '') : order[idxA].text)) b.textContent = '🔇 Read-aloud is not available here';
@@ -256,7 +266,7 @@ document.getElementById('nextA').onclick = () => {
   if (idxA < order.length) showA(); else startB();
 };
 function startA() {
-  order = shuffle([...cards]);
+  order = [...cards];
   idxA = 0;
   scoreAcount = 0;
   showA();
@@ -289,10 +299,15 @@ function renderC() {
   AI_ITEMS_C.forEach((it, i) => {
     const d = document.createElement('div');
     d.className = 'card';
-    d.innerHTML = '<p class="big">🤖 ' + it.q + '</p><button class="go" data-i="' + i + '" data-act="check">✅ Check the source first</button> <button class="alt" data-i="' + i + '" data-act="trust">🤷 Trust it</button><p class="fb"></p>';
+    d.innerHTML = '<p class="big">🤖 ' + it.q + '</p><p><button class="alt speak" onclick="playAiC(' + i + ')">🔊 Listen</button></p><button class="go" data-i="' + i + '" data-act="check">✅ Check the source first</button> <button class="alt" data-i="' + i + '" data-act="trust">🤷 Trust it</button><p class="fb"></p>';
     el.appendChild(d);
   });
   el.querySelectorAll('button[data-act]').forEach(b => b.onclick = () => answerC(+b.dataset.i, b.dataset.act, b));
+}
+function playAiC(i) {
+  if (window._aiC && !window._aiC.paused) { window._aiC.pause(); window._aiC = null; return; }
+  window._aiC = new Audio('audio/ashiya-ai-' + (i + 1) + '-en.mp3');
+  window._aiC.play();
 }
 function answerC(i, act, btn) {
   const card = btn.closest('.card');
