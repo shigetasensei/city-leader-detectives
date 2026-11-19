@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mission 1: AI Detective (Ashiya)</title>
+<style>
+body{font-family:system-ui,-apple-system,sans-serif;background:linear-gradient(160deg,#fef6e4,#e0f4ff);margin:0;color:#1d2433;line-height:1.7}
+main{max-width:720px;margin:0 auto;padding:20px}
+h1{font-size:1.7rem;margin:.3em 0;color:#1d4ed8}
+.card{background:#fff;border-radius:18px;padding:18px 20px;margin:12px 0;box-shadow:0 4px 12px rgba(0,0,0,.08)}
+.opt{display:block;width:100%;text-align:left;font:inherit;font-size:1.05rem;padding:12px 14px;margin:8px 0;border:2px solid #cbd5e1;border-radius:12px;background:#f8fafc;cursor:pointer}
+.opt:hover{border-color:#1d4ed8}
+.opt.correct{border-color:#15803d;background:#dcfce7}
+.opt.wrong{border-color:#b91c1c;background:#fee2e2}
+.opt:disabled{cursor:default}
+.where{background:#fff7e0;border-radius:12px;padding:10px 12px;margin:10px 0}
+.feedback{margin-top:10px;padding:10px 12px;border-radius:10px;background:#f7fbff}
+.btn{display:inline-block;padding:12px 18px;border-radius:14px;text-decoration:none;font-weight:700;margin:6px 8px 6px 0;color:#1d2433;box-shadow:0 3px 0 rgba(0,0,0,.15);border:0;font:inherit;cursor:pointer}
+.b1{background:#ffb703}.b2{background:#06d6a0}.b3{background:#8ecae6}.b4{background:#ffd6e7}
+.alt{background:#e5e7eb;color:#1d2433}
+.muted{color:#4a5568;font-size:.95rem}
+.good{color:#15803d}.bad{color:#b91c1c}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<main>
+<h1>🤖 Mission 1: AI Detective (Ashiya)</h1>
+<button id="mute" class="btn b3" style="margin:0 0 10px">🔊 Sound on</button>
+<p class="muted">First, check what AI says about Ashiya. Then answer the quiz. Each AI answer has a source you can check. Some AI answers are wrong, so always check before you trust.</p>
+
+<div class="card">
+  <h2 style="margin:0 0 6px;color:#102a43;font-size:1.2rem">📍 Find Ashiya on the map</h2>
+  <p class="muted">Ashiya is between Kobe and Nishinomiya, on the coast of Osaka Bay.</p>
+  <svg viewBox="0 0 400 220" width="100%" role="img" aria-label="Simple map showing Ashiya between Kobe and Nishinomiya, near Osaka Bay" style="border-radius:12px">
+    <rect x="0" y="0" width="400" height="220" fill="#cfe8fb"/>
+    <polygon points="0,0 400,0 400,40 330,70 300,120 210,140 120,150 40,140 0,120" fill="#d8efc2" stroke="#4f8a3c" stroke-width="1.5"/>
+    <polygon points="150,95 215,95 235,110 225,135 170,140 145,125" fill="#ffd166" fill-opacity="0.9" stroke="#b45309" stroke-width="2"/>
+    <text x="182" y="120" font-size="13" font-weight="700" text-anchor="middle" fill="#102a43">Ashiya</text>
+    <text x="70" y="115" font-size="12" text-anchor="middle" fill="#4b5563">Kobe</text>
+    <text x="300" y="112" font-size="12" text-anchor="middle" fill="#4b5563">Nishinomiya</text>
+    <text x="150" y="30" font-size="12" font-style="italic" fill="#4b5563">Rokko Mountains</text>
+    <text x="150" y="195" font-size="12" font-style="italic" fill="#2b6cb0">Osaka Bay</text>
+  </svg>
+  <p class="muted" style="font-size:.85rem">Simple schematic, not to scale.</p>
+</div>
+
+<div class="card" id="aiIntro">
+  <h2 style="margin:0 0 6px;color:#102a43;font-size:1.2rem">🤖 Mission 1: AI says...</h2>
+  <p class="muted">Read each AI answer. Press <b>Check the source first</b> before you decide whether it is true.</p>
+  <div id="aiItems"></div>
+  <div id="aiResult" class="card hidden"></div>
+</div>
+
+<div class="card">
+  <h2 style="margin:0 0 6px;color:#102a43;font-size:1.2rem">🔍 Mission 2: Quiz</h2>
+  <p class="muted">Think about where you would find each answer, then choose one.</p>
+</div>
+
+<div id="quiz"></div>
+
+<div class="card hidden" id="result">
+  <h2 style="margin:0 0 6px;color:#1d4ed8">Your score</h2>
+  <p id="score" style="font-size:1.2rem;font-weight:700"></p>
+  <p id="comment"></p>
+  <button class="btn b1" id="retry">Try again</button>
+</div>
+
+<a class="btn b3" href="ashiya.html">📍 Back to Ashiya menu</a>
+<a class="btn b4" href="ashiya-quote.html">🕵️ Quote Detectives: Ashiya</a>
+<a class="btn b4" href="ashiya-questions.html">📋 Questions for Mayor Takashima</a>
+
+<div class="card" style="background:#fff;border-radius:18px;padding:18px;margin:14px 0;box-shadow:0 4px 12px rgba(0,0,0,.08)">
+  <h2 style="margin:0 0 8px;font-size:1.3rem">📚 Learn more</h2>
+  <ul>
+    <li><a href="https://www.city.ashiya.lg.jp/kokusai/kokusai/contents_1.html" target="_blank" rel="noopener">A Guide to Living in Ashiya (English, City of Ashiya)</a></li>
+    <li><a href="https://ashiya-museum.jp/en-top" target="_blank" rel="noopener">Ashiya City Museum of Art and History (English)</a></li>
+  </ul>
+</div>
+<p class="muted" style="font-size:.9rem;margin-top:24px">This page was made with Claude AI for educational purposes. No information is obtained from the students.</p>
+</main>
+
+<script>
+const AI_ITEMS = [
+  {q: "AI says: The Ashiya City Museum of Art and History opened in 2005.", ok: false,
+   why: "The museum opened in 1991, and it reopened in 2023.",
+   src: "https://art-tourism.jp/en/article/ashiya-museum_en", srcName: "Art Tourism Japan: Ashiya City Museum of Art"},
+  {q: "AI says: Miratap Park, also called Ashiya Grand Park, hosts a summer carnival with fireworks.", ok: true,
+   why: "The city's English guide lists a summer carnival with fireworks at Miratap Park.",
+   src: "https://www.city.ashiya.lg.jp/kokusai/living_information/documents/2026ashiyatechoeng3.pdf", srcName: "City of Ashiya English guide (PDF)"},
+  {q: "AI says: Harue Kitamura was elected as the first woman mayor of a city in Japan.", ok: true,
+   why: "Wikipedia says she was elected in 1991 as the first woman mayor of a city in Japan.",
+   src: "https://en.wikipedia.org/wiki/Ashiya,_Hyogo", srcName: "Wikipedia: Ashiya, Hyōgo"}
+];
+let scoreAI = 0;
+
+function renderAI() {
+  const el = document.getElementById("aiItems");
+  el.innerHTML = "";
+  AI_ITEMS.forEach((it, i) => {
+    const d = document.createElement("div");
+    d.className = "card";
+    d.innerHTML = `<p><b>🤖 ${it.q}</b></p>
+      <button class="btn alt" data-i="${i}" data-act="check">✅ Check the source first</button>
+      <button class="btn alt" data-i="${i}" data-act="trust">🤷 Trust it</button>
+      <p class="fb"></p>`;
+    el.appendChild(d);
+  });
+  el.querySelectorAll("button[data-act]").forEach(b => b.onclick = () => answerAI(+b.dataset.i, b.dataset.act, b));
+}
+
+function answerAI(i, act, btn) {
+  const card = btn.closest(".card");
+  if (card.dataset.done) return;
+  card.dataset.done = "1";
+  card.querySelectorAll("button").forEach(x => x.disabled = true);
+  const it = AI_ITEMS[i];
+  const fb = card.querySelector(".fb");
+  if (act === "check") {
+    scoreAI++;
+    fb.innerHTML = `<b class="good">✅ Smart detective! Check the source: <a href="${it.src}" target="_blank" rel="noopener">${it.srcName}</a></b><br><span class="muted">${it.why}</span>`;
+  } else {
+    fb.innerHTML = it.ok
+      ? `<b class="bad">🤔 It is right this time, but you cannot know that without checking.</b>`
+      : `<b class="bad">❌ Careful! AI made a mistake. ${it.why} Source: <a href="${it.src}" target="_blank" rel="noopener">${it.srcName}</a></b>`;
+  }
+  if (document.querySelectorAll("#aiItems .card[data-done]").length === AI_ITEMS.length) {
+    const r = document.getElementById("aiResult");
+    r.innerHTML = `<p><b>Mission 1 score: ${scoreAI} / ${AI_ITEMS.length} 🌟</b></p><p>Always check AI with a real source before you trust it.</p>`;
+    r.classList.remove("hidden");
+  }
+}
+
+const questions = [
+  {
+    q: "Which two cities is Ashiya located between?",
+    where: "Think: Which page would show a city's position on a map?",
+    choices: ["Kobe and Nishinomiya", "Kyoto and Osaka", "Himeji and Akashi"],
+    answer: 0,
+    explain: "Ashiya is between Kobe and Nishinomiya.",
+    found: "Look at the first lines of an encyclopedia page about the city.",
+    src: "https://en.wikipedia.org/wiki/Ashiya,_Hyogo", srcName: "Wikipedia: Ashiya, Hyōgo"
+  },
+  {
+    q: "Which three places make up Ashiya's cultural zone?",
+    where: "Think: Which official city guide would list public buildings together?",
+    choices: ["An art museum, the Tanizaki memorial museum, and the city library", "A castle, a zoo, and an aquarium", "A stadium, a shrine, and a temple"],
+    answer: 0,
+    explain: "The cultural zone has the Museum of Art and History, the Tanizaki Junichiro Memorial Museum of Literature, and the Municipal Library.",
+    found: "This is in the City of Ashiya's English guide.",
+    src: "https://www.city.ashiya.lg.jp/kokusai/living_information/documents/ashiyatecho_6-7.pdf", srcName: "City of Ashiya guide (PDF)"
+  },
+  {
+    q: "What do most works in the Ashiya City Museum of Art and History come from?",
+    where: "Think: Which art museum page would describe its collection?",
+    choices: ["Artists connected to Ashiya", "Ancient Egyptian artifacts", "Japanese cars"],
+    answer: 0,
+    explain: "The museum collects works mainly by artists connected to Ashiya, such as Koide Narashige, Atsuko Tanaka, and Jiro Yoshihara.",
+    found: "This is on the museum's listing in Tokyo Art Beat.",
+    src: "https://tokyoartbeat.com/en/venues/-/ashiya-city-museum-of-art-and-history", srcName: "Tokyo Art Beat: Ashiya City Museum of Art and History"
+  },
+  {
+    q: "When did the Ashiya City Museum of Art reopen after its renovation?",
+    where: "Think: Which museum page would list its opening and reopening dates?",
+    choices: ["2023", "1991", "2005"],
+    answer: 0,
+    explain: "The museum opened in 1991 and reopened in 2023.",
+    found: "This is on an English article about the museum.",
+    src: "https://art-tourism.jp/en/article/ashiya-museum_en", srcName: "Art Tourism Japan: Ashiya City Museum of Art"
+  },
+  {
+    q: "Which Ashiya festival has a danjiri procession in early October?",
+    where: "Think: Which city guide would list the festivals and their months?",
+    choices: ["Ashiya Autumn Festival", "Ashiya Summer Carnival", "Cherry Blossom Festival"],
+    answer: 0,
+    explain: "The Ashiya Autumn Festival in early October includes a danjiri (large wooden cart) procession.",
+    found: "This is in the City of Ashiya's English guide, in the list of the three major festivals.",
+    src: "https://www.city.ashiya.lg.jp/kokusai/living_information/documents/2026ashiyatechoeng3.pdf", srcName: "City of Ashiya English guide (PDF)"
+  }
+];
+
+let soundOn = true;
+let audioCtx = null;
+function tone(freq, start, dur, type = "sine", vol = 0.2) {
+  if (!soundOn) return;
+  try {
+    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    const t = audioCtx.currentTime + start;
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.type = type;
+    o.frequency.setValueAtTime(freq, t);
+    g.gain.setValueAtTime(vol, t);
+    g.gain.exponentialRampToValueAtTime(0.001, t + dur);
+    o.connect(g);
+    g.connect(audioCtx.destination);
+    o.start(t);
+    o.stop(t + dur);
+  } catch (e) {}
+}
+function playCorrect() { tone(660, 0, 0.15); tone(880, 0.12, 0.25); }
+function playWrong() { tone(220, 0, 0.3, "sawtooth", 0.12); tone(180, 0.18, 0.3, "sawtooth", 0.12); }
+function playFanfare() { [523, 659, 784, 1047].forEach((f, i) => tone(f, i * 0.15, 0.35, "triangle", 0.25)); }
+
+let current = 0, score = 0;
+const quiz = document.getElementById("quiz");
+const result = document.getElementById("result");
+
+function render() {
+  if (current >= questions.length) {
+    quiz.innerHTML = "";
+    result.classList.remove("hidden");
+    playFanfare();
+    document.getElementById("score").textContent = `${score} out of ${questions.length} correct`;
+    document.getElementById("comment").textContent =
+      score === questions.length ? "Excellent! You checked the sources well." :
+      score >= 3 ? "Well done. Read the explanations for the questions you missed." :
+      "Read the explanations, then try again.";
+    return;
+  }
+  const item = questions[current];
+  quiz.innerHTML = `
+    <div class="card">
+      <p class="muted">Question ${current + 1} of ${questions.length}</p>
+      <h2 style="margin:.2em 0 .4em;color:#102a43;font-size:1.25rem">${item.q}</h2>
+      <div class="where"><b>🔎 Where would you look?</b><br>${item.where}</div>
+      <div id="choices"></div>
+      <div id="feedback"></div>
+    </div>`;
+  const box = document.getElementById("choices");
+  item.choices.forEach((text, i) => {
+    const b = document.createElement("button");
+    b.className = "opt";
+    b.textContent = `${["A", "B", "C"][i]}. ${text}`;
+    b.addEventListener("click", () => choose(i));
+    box.appendChild(b);
+  });
+}
+
+function choose(i) {
+  const item = questions[current];
+  document.querySelectorAll(".opt").forEach((b, idx) => {
+    b.disabled = true;
+    if (idx === item.answer) b.classList.add("correct");
+    if (idx === i && i !== item.answer) b.classList.add("wrong");
+  });
+  if (i === item.answer) { score++; playCorrect(); } else { playWrong(); }
+  document.getElementById("feedback").innerHTML = `
+    <div class="feedback">
+      <p><b>${i === item.answer ? "Correct!" : "Not quite."}</b> The answer is: "${item.choices[item.answer]}"</p>
+      <p>${item.explain}</p>
+      <p><b>📄 Where this appears:</b> ${item.found} <a href="${item.src}" target="_blank" rel="noopener">${item.srcName}</a></p>
+      <button class="btn b1" id="next">${current + 1 < questions.length ? "Next question" : "See my score"}</button>
+    </div>`;
+  document.getElementById("next").addEventListener("click", () => { current++; render(); });
+}
+
+document.getElementById("mute").addEventListener("click", e => {
+  soundOn = !soundOn;
+  e.target.textContent = soundOn ? "🔊 Sound on" : "🔇 Sound off";
+});
+
+document.getElementById("retry").addEventListener("click", () => {
+  current = 0; score = 0;
+  result.classList.add("hidden");
+  render();
+});
+
+renderAI();
+render();
+</script>
+</body>
+</html>

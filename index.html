@@ -39,6 +39,7 @@ h2{font-size:1.3rem;margin:1em 0 .3em;color:#1d4ed8}
 <body>
 <main>
 <h1>🕵️ City Leader Detectives</h1>
+<button id="sfxMute" class="btn b3" style="margin:0 0 10px">🔊 Sound on</button>
 <nav class="card" style="padding:12px 14px">
   <a class="btn b5" href="families.html">📚 For families and teachers</a>
   <a class="btn b3" href="kobe.html">📍 Kobe</a>
@@ -161,6 +162,7 @@ const info = document.getElementById("info");
 const legend = document.getElementById("legend");
 
 function show(id) {
+  if (id) sfxPop();
   document.querySelectorAll(".pin").forEach(p => p.classList.toggle("active", p.dataset.id === id));
   document.querySelectorAll("#legend button").forEach(b => {
     const on = b.dataset.id === id;
@@ -195,11 +197,38 @@ document.querySelectorAll(".pin").forEach(p => {
 });
 
 function answerQ(btn, correct, msg) {
+  if (correct) sfxRight(); else sfxWrong();
   const fb = btn.parentElement.nextElementSibling;
   fb.textContent = correct ? "✅ Correct! " + msg : "❌ Not quite. Try again!";
   fb.style.color = correct ? "#15803d" : "#b45309";
   fb.style.fontWeight = "700";
 }
+
+let sfxOn = true, sfxCtx = null;
+function beep(freq, start, dur, type = "sine", vol = 0.15) {
+  if (!sfxOn) return;
+  try {
+    sfxCtx = sfxCtx || new (window.AudioContext || window.webkitAudioContext)();
+    const t = sfxCtx.currentTime + start;
+    const o = sfxCtx.createOscillator();
+    const g = sfxCtx.createGain();
+    o.type = type;
+    o.frequency.setValueAtTime(freq, t);
+    g.gain.setValueAtTime(vol, t);
+    g.gain.exponentialRampToValueAtTime(0.001, t + dur);
+    o.connect(g);
+    g.connect(sfxCtx.destination);
+    o.start(t);
+    o.stop(t + dur);
+  } catch (e) {}
+}
+function sfxPop() { beep(740, 0, 0.08); beep(980, 0.06, 0.1); }
+function sfxRight() { beep(660, 0, 0.15); beep(880, 0.12, 0.25); }
+function sfxWrong() { beep(220, 0, 0.3, "sawtooth", 0.1); beep(180, 0.18, 0.3, "sawtooth", 0.1); }
+document.getElementById("sfxMute").addEventListener("click", e => {
+  sfxOn = !sfxOn;
+  e.target.textContent = sfxOn ? "🔊 Sound on" : "🔇 Sound off";
+});
 
 show(null);
 </script>
