@@ -43,6 +43,20 @@ body{background-attachment:fixed;min-height:100vh}
 .g{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}.g button{margin:0}
 .fb{min-height:0;margin-top:6px}.fb:empty{display:none}
 body{background-attachment:fixed;min-height:100vh}
+
+.mapcard svg{width:100%;height:auto;max-width:460px;display:block;margin:0 auto;border-radius:14px;background:#e6f3ff}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.tabs button{font:inherit;font-weight:800;border:3px solid #cbd5e1;background:#fff;border-radius:999px;padding:8px 14px;cursor:pointer}
+.tabs button[aria-pressed="true"]{background:#fff1c9;border-color:#f2c14e}
+.pin{cursor:pointer}.pin:focus-visible circle{stroke:#1d4ed8;stroke-width:4}
+.pin text{font-family:system-ui,sans-serif;font-weight:800;pointer-events:none}
+.ward{cursor:pointer}.ward:focus-visible rect{stroke:#1d4ed8;stroke-width:4}
+.ward text{font-family:system-ui,sans-serif;font-weight:700;pointer-events:none}
+.maplist{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.maplist button{font:inherit;font-weight:700;font-size:.95rem;border:2px solid #cbd5e1;background:#fff;border-radius:999px;padding:4px 12px;cursor:pointer}
+.maplist button[aria-pressed="true"]{border-color:#1d4ed8;background:#dbeafe}
+#mapInfo{background:#fff8d6;border-radius:14px;padding:10px 14px;min-height:3.2em;font-weight:700}
+.showmap{font:inherit;font-weight:800;border:3px solid #1d4ed8;background:#fff;color:#1d2433;border-radius:999px;padding:6px 14px;cursor:pointer;margin-top:6px}
 </style>
 <script src="accessibility.js"></script>
 </head>
@@ -56,24 +70,42 @@ body{background-attachment:fixed;min-height:100vh}
 <div class="arrow">⬇️ Japan is divided into prefectures</div>
 
 <div class="lv l2"><p class="big2">🗾 Prefecture <span class="ja">県 (ken)</span>: <mark>Hyogo</mark></p>
-<p style="margin:.2em 0 0">A big area made of many cities and towns. The leader is the <b>Governor (知事)</b>. Hyogo's capital is <b>Kobe</b>. Hyogo has <b>41 cities and towns</b> in all.</p></div>
+<p style="margin:.2em 0 0">A big area made of many cities and towns. The leader is the <b>Governor (知事)</b>. Hyogo's capital is <b>Kobe</b>. Hyogo has <b>41 cities and towns</b> in all.</p>
+<p style="margin:6px 0 0"><button class="showmap" onclick="showMap('p')">🗺️ Show on the map</button></p></div>
 <div class="arrow">⬇️ Each prefecture is divided into cities and towns</div>
 
 <div class="row">
  <div class="l3"><p class="big2">🏙️ City <span class="ja">市 (shi)</span></p>
   <p style="margin:.2em 0">Bigger and busier. Hyogo has <b>29 cities</b>. The leader is the <b>Mayor (市長)</b>.</p>
-  <p class="muted" style="margin:0">Examples: Kobe, Nishinomiya, Ashiya</p></div>
+  <p class="muted" style="margin:0">Examples: Kobe, Nishinomiya, Ashiya</p>
+<p style="margin:6px 0 0"><button class="showmap" onclick="showMap('c')">🗺️ Show on the map</button></p></div>
  <div class="l3"><p class="big2">🏘️ Town <span class="ja">町 (machi / chō)</span></p>
   <p style="margin:.2em 0">Smaller, with more countryside. Hyogo has <b>12 towns</b>. The leader is the <b>Town Mayor (町長)</b>.</p>
-  <p class="muted" style="margin:0">Examples: Sayo, Kamigori, Shin'onsen</p></div>
+  <p class="muted" style="margin:0">Examples: Sayo, Kamigori, Shin'onsen</p>
+<p style="margin:6px 0 0"><button class="showmap" onclick="showMap('t')">🗺️ Show on the map</button></p></div>
 </div>
 <p class="muted">Cities and towns are the same level of government. Hyogo has no villages (村).</p>
 <div class="arrow">⬇️ Only the very biggest cities are divided again</div>
 
 <div class="lv l4"><p class="big2">📍 Ward <span class="ja">区 (ku)</span></p>
-<p style="margin:.2em 0 0">A ward is a smaller part <b>inside a very big city</b>. <b>Kobe has 9 wards</b>, like <mark>Higashinada Ward</mark>. Each ward has a ward office and a <b>Ward Mayor (区長)</b>.  Nishinomiya and Ashiya do <b>not</b> have wards.</p></div>
+<p style="margin:.2em 0 0">A ward is a smaller part <b>inside a very big city</b>. <b>Kobe has 9 wards</b>, like <mark>Higashinada Ward</mark>. Each ward has a ward office and a <b>Ward Mayor (区長)</b>.  Nishinomiya and Ashiya do <b>not</b> have wards.</p>
+<p style="margin:6px 0 0"><button class="showmap" onclick="showMap('w')">🗺️ Show on the map</button></p></div>
 
-<div class="card" style="margin-top:18px">
+
+<div class="card mapcard" id="mapCard" style="margin-top:18px">
+  <h2>🗺️ Hyogo map</h2>
+  <p class="muted" style="margin:0 0 6px">Tap a button, then tap the map. This is a simple map, not exact.</p>
+  <div class="tabs" id="tabs" role="group" aria-label="Map layers">
+    <button type="button" data-t="p" aria-pressed="true">🗾 Prefecture</button>
+    <button type="button" data-t="c" aria-pressed="false">🏙️ Cities</button>
+    <button type="button" data-t="t" aria-pressed="false">🏘️ Towns</button>
+    <button type="button" data-t="w" aria-pressed="false">📍 Wards (Kobe)</button>
+  </div>
+  <svg id="mapSvg" viewBox="0 0 360 520" role="img" aria-label="Simple map of Hyogo Prefecture"></svg>
+  <div class="maplist" id="mapList"></div>
+  <p id="mapInfo" aria-live="polite"></p>
+</div>
+<div class="card">
 <h2>🔎 Our three places</h2>
 <ul>
  <li><b>Kobe</b> = a city (and Hyogo's capital) with 9 wards. Higashinada is one ward.</li>
@@ -101,6 +133,71 @@ function pick(btn, ok, msg) {
   fb.textContent = ok ? "✅ Yes! " + (msg || "") : "❌ Not quite. Try again!";
   fb.style.color = ok ? "#15803d" : "#b45309";
 }
+const HM=[[134.27,35.60],[134.40,35.62],[134.55,35.66],[134.70,35.67],[134.85,35.65],[135.00,35.65],[135.10,35.62],[135.12,35.52],[135.20,35.32],[135.25,35.10],[135.33,34.98],[135.36,34.90],[135.42,34.85],[135.44,34.76],[135.40,34.71],[135.34,34.72],[135.29,34.72],[135.22,34.70],[135.18,34.68],[135.10,34.65],[135.00,34.65],[134.95,34.66],[134.85,34.75],[134.70,34.78],[134.55,34.80],[134.42,34.73],[134.33,34.74],[134.30,34.90],[134.30,35.05],[134.25,35.25],[134.22,35.42]];
+const AW=[[134.70,34.42],[134.74,34.22],[134.86,34.16],[134.98,34.30],[134.98,34.48],[134.93,34.62],[134.84,34.60],[134.75,34.54]];
+const XY=(lo,la)=>[((lo-134.1)*246).toFixed(1),((35.8-la)*300+10).toFixed(1)];
+const PT=a=>'M'+a.map(p=>XY(p[0],p[1]).join(',')).join('L')+'Z';
+const CITIES=[
+ ['Kobe','神戸',135.18,34.69,'Kobe is a city. It is the capital of Hyogo. It has 9 wards.'],
+ ['Nishinomiya','西宮',135.34,34.74,'Nishinomiya is a city. Koshien Stadium is here. It has no wards.'],
+ ['Ashiya','芦屋',135.30,34.73,'Ashiya is a city. It is between the sea and Mount Rokko. It has no wards.'],
+ ['Amagasaki','尼崎',135.41,34.73,'Amagasaki is a city in the east of Hyogo, next to Osaka.'],
+ ['Himeji','姫路',134.69,34.82,'Himeji is a city in the west of Hyogo.'],
+ ['Toyooka','豊岡',134.82,35.54,'Toyooka is a city in the north of Hyogo, near the Sea of Japan.']
+];
+const TOWNS=[
+ ['Sayo','佐用',134.36,34.97,'Sayo is a town in the west of Hyogo.'],
+ ['Kamigori','上郡',134.40,34.88,'Kamigori is a town in the southwest of Hyogo.'],
+ ["Shin’onsen",'新温泉',134.45,35.58,"Shin’onsen is a town in the north of Hyogo, near the sea."],
+ ['Ichikawa','市川',134.78,35.00,'Ichikawa is a town in the middle of Hyogo.'],
+ ['Kamikawa','神河',134.85,35.06,'Kamikawa is a town in the middle of Hyogo.']
+];
+const WARDS=[
+ ['Nishi','西区',20,40,170,220],['Kita','北区',190,40,490,130],
+ ['Tarumi','垂水区',190,180,70,80],['Suma','須磨区',260,180,70,80],['Nagata','長田区',330,180,70,80],
+ ['Hyogo','兵庫区',400,180,70,80],['Chuo','中央区',470,180,70,80],['Nada','灘区',540,180,70,80],['Higashinada','東灘区',610,180,70,80]
+];
+const svg=document.getElementById('mapSvg'),list=document.getElementById('mapList'),info=document.getElementById('mapInfo');
+let tab='p',sel=null;
+const INFO={p:'Hyogo Prefecture (兵庫県) is the whole orange area. It has 41 cities and towns. Kobe is the capital.',
+ c:'Hyogo has 29 cities. Here are 6 of them. Tap one.',t:'Hyogo has 12 towns. Here are 5 of them. Tap one.',
+ w:'Kobe City has 9 wards. This map zooms in on Kobe and is not to scale. Tap a number or a name.'};
+function draw(){
+  let h='';
+  if(tab==='w'){
+    h+='<rect width="700" height="330" fill="#e6f3ff"/>';
+    h+='<rect x="0" y="262" width="700" height="68" fill="#cfe8ff"/><text x="350" y="305" text-anchor="middle" font-size="16" fill="#3b6ea5" font-family="system-ui,sans-serif" font-style="italic">Osaka Bay</text>';
+    WARDS.forEach(w=>{const on=sel===w[0],our=w[0]==='Higashinada';
+      h+=`<g class="ward" tabindex="0" role="button" aria-label="${w[0]} Ward" data-n="${w[0]}"><rect x="${w[2]}" y="${w[3]}" width="${w[4]}" height="${w[5]}" rx="10" fill="${our?'#7fb3f0':'#d6e4f7'}" stroke="${on?'#1d4ed8':'#5b7db1'}" stroke-width="${on?4:2}"/>`+
+      `<text x="${w[2]+w[4]/2}" y="${w[3]+w[5]/2}" text-anchor="middle" dominant-baseline="central" font-size="34" font-weight="800" fill="#1d2433">${WARDS.indexOf(w)+1}${our?'⭐':''}</text></g>`;});
+    svg.setAttribute('viewBox','0 0 700 330');
+  }else{
+    svg.setAttribute('viewBox','0 0 360 520');
+    h+='<rect width="360" height="520" fill="#e6f3ff"/>';
+    const fill=tab==='p'?'#f2c14e':'#f7e4a6';
+    h+=`<path d="${PT(HM)}" fill="${fill}" stroke="#b7791f" stroke-width="2"/><path d="${PT(AW)}" fill="${fill}" stroke="#b7791f" stroke-width="2"/>`;
+    h+='<text x="180" y="150" text-anchor="middle" font-size="16" font-weight="800" fill="#7c4a03" font-family="system-ui,sans-serif">Hyogo 兵庫県</text>';
+    h+='<text x="60" y="60" font-size="12" fill="#3b6ea5" font-family="system-ui,sans-serif" font-style="italic">Sea of Japan</text><text x="255" y="490" font-size="12" fill="#3b6ea5" font-family="system-ui,sans-serif" font-style="italic">Osaka Bay / Seto Inland Sea</text>';
+    if(tab==='p'){const k=XY(135.18,34.69);h+=`<text x="${k[0]}" y="${k[1]}" font-size="22" text-anchor="middle" dominant-baseline="central">⭐</text><text x="${+k[0]-14}" y="${+k[1]+22}" font-size="11" font-weight="800" text-anchor="end" fill="#7c4a03" font-family="system-ui,sans-serif">Kobe (capital)</text>`;}
+    const set=tab==='c'?CITIES:tab==='t'?TOWNS:[];
+    const col=tab==='c'?'#2a9d52':'#f08a4b';
+    set.forEach(c=>{const p=XY(c[2],c[3]),on=sel===c[0];
+      h+=`<g class="pin" tabindex="0" role="button" aria-label="${c[0]}" data-n="${c[0]}"><circle cx="${p[0]}" cy="${p[1]}" r="${on?10:7}" fill="${col}" stroke="${on?'#1d4ed8':'#fff'}" stroke-width="${on?3:2}"/>`+(on?`<text x="${p[0]}" y="${+p[1]-14}" text-anchor="middle" font-size="13" fill="#1d2433" stroke="#fff" stroke-width="3" paint-order="stroke">${c[0]}</text>`:'')+'</g>';});
+  }
+  svg.innerHTML=h;
+  svg.querySelectorAll('[data-n]').forEach(g=>{const go=()=>choose(g.dataset.n);g.addEventListener('click',go);g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}})});
+  list.innerHTML='';
+  const names=tab==='c'?CITIES.map(c=>c[0]):tab==='t'?TOWNS.map(c=>c[0]):tab==='w'?WARDS.map(w=>w[0]):[];
+  names.forEach(n=>{const b=document.createElement('button');b.type='button';b.textContent=(tab==='w'?(names.indexOf(n)+1)+'. ':'')+n+(tab==='w'?' Ward':'');b.setAttribute('aria-pressed',String(sel===n));b.onclick=()=>choose(n);list.appendChild(b);});
+}
+function choose(n){sel=n;draw();
+  if(tab==='w'){const w=WARDS.find(x=>x[0]===n);info.textContent=n==='Higashinada'?'⭐ Higashinada Ward (東灘区) is our ward. Rokko Island and our school are here.':n+' Ward ('+w[1]+') is one of Kobe’s 9 wards.';}
+  else{const c=(tab==='c'?CITIES:TOWNS).find(x=>x[0]===n);info.textContent=c[4];}
+}
+function setTab(t){tab=t;sel=null;document.querySelectorAll('#tabs button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.t===t)));draw();info.textContent=INFO[t];}
+document.querySelectorAll('#tabs button').forEach(b=>b.addEventListener('click',()=>setTab(b.dataset.t)));
+function showMap(t){setTab(t);document.getElementById('mapCard').scrollIntoView({behavior:'smooth',block:'start'});}
+setTab('p');
 </script>
 </body>
 </html>
