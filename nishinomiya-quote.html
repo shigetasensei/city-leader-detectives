@@ -282,7 +282,7 @@ function renderC() {
     d.innerHTML = '<p class="big">🤖 ' + it.q + '</p><p><button class="alt speak" data-i="' + i + '" data-lang="en" onclick="playAi(' + i + ',\'en\')">🔊 Listen</button></p><button class="go" data-i="' + i + '" data-act="check">✅ Check the source first</button> <button class="alt" data-i="' + i + '" data-act="trust">🤷 Trust it</button><p class="fb"></p>';
     el.appendChild(d);
   });
-  el.querySelectorAll('button').forEach(b => b.onclick = () => answerC(+b.dataset.i, b.dataset.act, b));
+  el.querySelectorAll('button[data-act]').forEach(b => b.onclick = () => answerC(+b.dataset.i, b.dataset.act, b));
 }
 function playAi(i, lang) {
   const a = new Audio('audio/ai-' + (i + 1) + '-' + lang + '.mp3');
