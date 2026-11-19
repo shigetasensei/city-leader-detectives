@@ -158,7 +158,7 @@ function speakText(text){
 }
 document.getElementById('speakA').onclick=()=>{
   const c=order[idxA];
-  const AUD={'前へ':'/_blob/135fddd33df843d0c7a7b9a12a53b07c','コロナ':'/_blob/81d77d2a5c0aede9ed4e8287c62c5635','市民':'/_blob/5a715729ff60876836c577a6a2837154','待機児童':'/_blob/e1c9be516b3440541f9b0a002f948e08','共に':'/_blob/b3325fcebfb27424601a450c757bc5ae','市民と市政':'/_blob/ce04ddc2226571be79d39f5737f8f674'};
+  const AUD={'前へ':'audio/nishinomiya-card1.mp3','コロナ':'audio/nishinomiya-card2.mp3','市民':'audio/nishinomiya-card3.mp3','待機児童':'audio/nishinomiya-card4.mp3','共に':'audio/nishinomiya-card-5.mp3','市民と市政':'audio/nishinomiya-card6.mp3'};
   if(AUD[c.key]){ if(window._nAud&&!window._nAud.paused){window._nAud.pause();window._nAud=null;} window._nAud=new Audio(AUD[c.key]); window._nAud.play(); return; }
   const t=c.kind==='quote'?c.en:c.text;
   const b=document.getElementById('speakA');

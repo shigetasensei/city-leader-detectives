@@ -61,7 +61,7 @@ mark{background:#fff3a3;padding:0 4px;border-radius:5px;font-weight:700;color:#1
     <li><b>Families:</b> many families with <mark>young children</mark> live here.</li>
     <li><b>Sake:</b> <mark>Uozaki</mark> and <mark>Mikage</mark> still have sake breweries.</li>
     <li><b>Events:</b> <mark>danjiri</mark> festivals and the <mark>rose festival</mark> on Rokko Island.</li>
-    <li><button onclick="playOne(this,'/_blob/5bee3fe1a279c82b3d4cd30a13f10fd4')" style="font:inherit;font-weight:700;border:none;border-radius:14px;background:#06d6a0;color:#1d2433;padding:4px 10px;cursor:pointer">🔊 Listen</button> <b>Our school:</b> <mark>Rokko Island</mark> is a <span class="g"><button onclick="pick(this,false)">natural</button><button onclick="pick(this,true,'Rokko Island was built on land made from the sea.')">man-made</button><button onclick="pick(this,false)">volcanic</button></span> island. <a href="https://www.canacad.ac.jp/discovering/our-campus" target="_blank" rel="noopener">Canadian Academy</a>, the school our students go to, is on Rokko Island. <span class="fb"></span></li>
+    <li><button onclick="playOne(this,'audio/canadian-academy.mp3')" style="font:inherit;font-weight:700;border:none;border-radius:14px;background:#06d6a0;color:#1d2433;padding:4px 10px;cursor:pointer">🔊 Listen</button> <b>Our school:</b> <mark>Rokko Island</mark> is a <span class="g"><button onclick="pick(this,false)">natural</button><button onclick="pick(this,true,'Rokko Island was built on land made from the sea.')">man-made</button><button onclick="pick(this,false)">volcanic</button></span> island. <a href="https://www.canacad.ac.jp/discovering/our-campus" target="_blank" rel="noopener">Canadian Academy</a>, the school our students go to, is on Rokko Island. <span class="fb"></span></li>
   </ul>
   <p class="muted">Sources: <a href="https://www.city.kobe.lg.jp/documents/70814/240316.pdf" target="_blank" rel="noopener">Kobe City document</a>, <a href="https://www.nomu.com/machikara/63/" target="_blank" rel="noopener">local guide</a>, <a href="https://www.seikatsu-guide.com/info/28/28101/1/" target="_blank" rel="noopener">local guide</a>, <a href="https://www.city.kobe.lg.jp/b07715/kuyakusho/higashinadaku/shoukai/kucyou-diary/kutyo-diary2020.html" target="_blank" rel="noopener">Higashinada ward office</a></p>
   <p class="muted">Size source: Universal Studios Japan area is 54 hectares (130 acres), which is about 0.54 km², so 34.03 km² is roughly 63 of them. <a href="https://en.wikipedia.org/wiki/Universal_Studios_Japan" target="_blank" rel="noopener">Universal Studios Japan (Wikipedia)</a></p>
@@ -120,11 +120,11 @@ mark{background:#fff3a3;padding:0 4px;border-radius:5px;font-weight:700;color:#1
 <script>
 let speaking = false;
 const KOBE_AUDIO = {
-  "Our Mayor": "/_blob/3f14be8d30ef551dc6932707796862fc",
-  "About Kobe": "/_blob/bf32d263382df096f289027f3ef73015",
-  "Higashinada Ward (": "/_blob/4816aa391e08bcd18d35e0b7cfa892a6",
-  "Higashinada Ward Mayor (": "/_blob/c7b1cb14a8750b1459350ccc2f53b1b5",
-  "Think about it": "/_blob/70b79e69a4d19d203be5c183d84e01bd"
+  "Our Mayor": "audio/our-mayor.mp3",
+  "About Kobe": "audio/about-kobe.mp3",
+  "Higashinada Ward (": "audio/higashinada-ward.mp3",
+  "Higashinada Ward Mayor (": "audio/higashinada-ward-mayor.mp3",
+  "Think about it": "audio/think-about-it.mp3"
 };
 let currentAudio = null;
 function listen(btn) {
