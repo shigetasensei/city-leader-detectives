@@ -8,7 +8,7 @@
 body{font-family:system-ui,-apple-system,sans-serif;background:linear-gradient(160deg,#fef6e4,#e0f4ff);margin:0;color:#1d2433;line-height:1.6}
 main{max-width:780px;margin:0 auto;padding:20px}
 h1{font-size:1.8rem;margin:.3em 0}
-.intro{background:#fff;border-radius:18px;padding:18px;box-shadow:0 4px 12px rgba(0,0,0,.08)}
+.intro{background:#fff;border-radius:18px;padding:18px;margin:18px 0;box-shadow:0 4px 12px rgba(0,0,0,.08)}
 .quest{background:#fff;border-radius:18px;padding:18px;margin:18px 0;box-shadow:0 4px 12px rgba(0,0,0,.08);border:3px solid #8ecae6}
 .quest h2{font-size:1.3rem;margin:0 0 4px;color:#1d4ed8}
 .quest .lore{color:#4a5568;margin:0 0 10px;font-style:italic}
@@ -25,20 +25,39 @@ li{margin:.25em 0}
 a{color:#1d4ed8;font-weight:700}
 .note{font-size:.95rem;color:#4a5568}
 .reward{font-size:.95rem;font-weight:700;margin-top:10px;color:#0a7d4f}
+.choices button{font:inherit;font-weight:700;border:2px solid #8ecae6;border-radius:999px;background:#fff;padding:4px 12px;margin:3px 4px;cursor:pointer}
+.fb{display:block;font-weight:700;min-height:1.4em;margin-top:6px}
+.askList li{margin-bottom:16px}
+.askList textarea{width:100%;font:inherit;padding:8px;border:2px solid #cbd5e1;border-radius:12px;box-sizing:border-box}
 .navbtn{display:inline-block;padding:10px 16px;border-radius:14px;text-decoration:none;font-weight:700;margin:4px 6px 4px 0}
+@media print{body *{visibility:hidden}#askMayor,#askMayor *{visibility:visible}#askMayor{position:absolute;left:0;top:0;width:100%;border:none;box-shadow:none;margin:0}#askMayor button{display:none}}
 </style>
 </head>
 <body>
 <main>
 <h1>🗺️ Quests for Mayor Takashima</h1>
-<div class="intro">
+<div class="intro" id="howToPlay" style="background:#fff3c4;border:3px solid #ffb703">
+  <h2 style="margin:0 0 8px;font-size:1.5rem;color:#102a43">🎮 How to Play</h2>
+  <button onclick="readAloud(this,'howToPlay')" style="font:inherit;font-weight:700;border:none;border-radius:14px;background:#06d6a0;color:#1d2433;padding:6px 12px;margin:0 0 8px;cursor:pointer">🔊 Listen</button>
+  <ol style="margin:.3em 0 .3em 1.4em;padding:0;font-size:1.1rem">
+    <li><b>🎧 Tap Listen</b> to hear the quest.</li>
+    <li><b>🔍 Look for clues</b> on the mayor's profile page.</li>
+    <li><b>✅ Green = clue found!</b> The answer is on his profile. Find it and say it out loud.</li>
+    <li><b>❓ Yellow = side quest!</b> The profile does not say. Think of a question to ask him in an interview.</li>
+    <li><b>🏅 Finish a quest</b> to earn a badge. Then start the next quest.</li>
+  </ol>
+  <p><b>⭐ Tip:</b> Try to guess the answer before you look. Did you get it right?</p>
+</div>
+
+<div class="intro" id="missionBox">
   <p><b>Your mission:</b> Complete each quest by finding answers to the questions. <span class="tag a">✅ Clue found</span> means the answer is on the mayor's official profile. <span class="tag b">❓ Side quest</span> means only the mayor can answer, so ask him in the interview!</p>
   <p class="note">Answers are paraphrased from his profile at <a href="https://www.takashimaryosuke.jp/" target="_blank" rel="noopener">takashimaryosuke.jp</a>. A Japanese speaker should check the Japanese wording.</p>
 </div>
 
-<div class="quest">
+<div class="quest" id="q1">
   <h2>🧭 Quest 1: About You</h2>
   <p class="lore">Learn who the mayor is and where his story began.</p>
+  <button onclick="readAloud(this,'q1')" style="font:inherit;font-weight:700;border:none;border-radius:14px;background:#06d6a0;color:#1d2433;padding:6px 12px;margin:0 0 8px;cursor:pointer">🔊 Listen</button>
 
   <div class="step found">
     <div class="text">Step 1: Where were you born, and where did you grow up?</div>
@@ -76,9 +95,10 @@ a{color:#1d4ed8;font-weight:700}
   <p class="reward">🏅 Reward: Hometown Explorer badge</p>
 </div>
 
-<div class="quest">
+<div class="quest" id="q2">
   <h2>💼 Quest 2: About Your Work</h2>
   <p class="lore">Discover what a mayor does every day.</p>
+  <button onclick="readAloud(this,'q2')" style="font:inherit;font-weight:700;border:none;border-radius:14px;background:#06d6a0;color:#1d2433;padding:6px 12px;margin:0 0 8px;cursor:pointer">🔊 Listen</button>
 
   <div class="step found">
     <div class="text">Step 5: Why did you want to become a mayor?</div>
@@ -99,9 +119,10 @@ a{color:#1d4ed8;font-weight:700}
   <p class="reward">🏅 Reward: Job Explorer badge</p>
 </div>
 
-<div class="quest">
+<div class="quest" id="q3">
   <h2>⚖️ Quest 3: Decision-Making</h2>
   <p class="lore">Find out how big choices get made for a whole city.</p>
+  <button onclick="readAloud(this,'q3')" style="font:inherit;font-weight:700;border:none;border-radius:14px;background:#06d6a0;color:#1d2433;padding:6px 12px;margin:0 0 8px;cursor:pointer">🔊 Listen</button>
 
   <div class="step found">
     <div class="text">Step 11: How do you make decisions for the city?</div>
@@ -119,9 +140,10 @@ a{color:#1d4ed8;font-weight:700}
   <p class="reward">🏅 Reward: Decision Maker badge</p>
 </div>
 
-<div class="quest">
+<div class="quest" id="q4">
   <h2>🌟 Quest 4: Leadership</h2>
   <p class="lore">Learn what it takes to lead and help a community.</p>
+  <button onclick="readAloud(this,'q4')" style="font:inherit;font-weight:700;border:none;border-radius:14px;background:#06d6a0;color:#1d2433;padding:6px 12px;margin:0 0 8px;cursor:pointer">🔊 Listen</button>
 
   <div class="step found">
     <div class="text">Step 15: How are you trying to make Ashiya a better place?</div>
@@ -140,6 +162,24 @@ a{color:#1d4ed8;font-weight:700}
   <p class="reward">🏅 Reward: Leader badge</p>
 </div>
 
+<div class="quest" id="wordGame" style="border-color:#06d6a0">
+  <h2>🎮 Word Game: Quest Words</h2>
+  <p class="lore">Read the clue, then tap the word that matches.</p>
+  <div id="wgBody"></div>
+</div>
+<div class="quest" id="askMayor" style="border-color:#ffb703">
+  <h2>🎤 Ask the Mayor</h2>
+  <p class="lore">Write what you think he will say. Then ask him in an interview!</p>
+  <ol class="askList">
+    <li><b>Who helps you make decisions for Ashiya?</b><textarea rows="2"></textarea></li>
+    <li><b>What did you learn at Harvard that helps you make decisions for a city?</b><textarea rows="2"></textarea></li>
+    <li><b>How do you decide which city problem to fix first?</b><textarea rows="2"></textarea></li>
+    <li><b>How do the mayor and the city council make decisions together?</b><textarea rows="2"></textarea></li>
+    <li><b>What different groups work together to run Ashiya?</b><textarea rows="2"></textarea></li>
+  </ol>
+  <button onclick="window.print()" style="font:inherit;font-weight:700;border:none;border-radius:14px;background:#ffb703;color:#1d2433;padding:8px 14px;cursor:pointer">🖨️ Print or save as PDF</button>
+</div>
+
 <p class="note">Back to the game: <a href="ashiya-quote.html">Quote Detectives: Ashiya</a></p>
 <p>
   <a class="navbtn" href="ashiya-quote.html" style="background:#06d6a0;color:#1d2433;box-shadow:0 3px 0 #04a77b">🕵️ Quote Detectives: Ashiya</a>
@@ -147,5 +187,116 @@ a{color:#1d4ed8;font-weight:700}
 </p>
 <p class="note" style="font-size:.9rem;margin-top:24px">This page was made with Claude AI for educational purposes. No information is obtained from the students.</p>
 </main>
+<script>
+function readAloud(btn, id) {
+  if (!("speechSynthesis" in window)) { btn.textContent = "Reading aloud is not supported here"; return; }
+  if (speechSynthesis.speaking) { speechSynthesis.cancel(); btn.textContent = "🔊 Listen"; return; }
+  const el = document.getElementById(id).cloneNode(true);
+  el.querySelectorAll("button").forEach(b => b.remove());
+  const text = el.innerText.replace(/[^\x00-\x7F]+/g, " ").replace(/\s+/g, " ").trim();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = "en-US";
+  u.rate = 0.85;
+  u.onend = () => { btn.textContent = "🔊 Listen"; };
+  btn.textContent = "⏹ Stop reading";
+  speechSynthesis.speak(u);
+}
+function setupGuesses() {
+  document.querySelectorAll(".step").forEach(step => {
+    const tag = step.querySelector(".tag");
+    const text = step.querySelector(".text");
+    if (!tag || !text) return;
+    const isFound = step.classList.contains("found");
+    const hide = [...step.children].filter(el => el !== text);
+    hide.forEach(el => el.style.display = "none");
+    const box = document.createElement("div");
+    box.innerHTML = '<p style="margin:6px 0 0"><b>🎯 Guess: Will the answer be on the profile page?</b></p><span class="choices"><button>✅ Yes</button><button>❌ No</button></span><span class="fb"></span>';
+    text.after(box);
+    const [yes, no] = box.querySelectorAll("button");
+    const fb = box.querySelector(".fb");
+    const answer = saidYes => {
+      const right = saidYes === isFound;
+      fb.textContent = right ? "✅ Right!" : "❌ Not quite!";
+      fb.style.color = right ? "#15803d" : "#b45309";
+      yes.disabled = no.disabled = true;
+      const go = document.createElement("p");
+      go.style.fontWeight = "700";
+      go.innerHTML = "🔍 Now go find the clue on the profile page! Then tap the button to check.";
+      const showBtn = document.createElement("button");
+      showBtn.textContent = "👀 Show the clue";
+      showBtn.style.cssText = "font:inherit;font-weight:700;border:none;border-radius:14px;background:#ffb703;color:#1d2433;padding:6px 12px;cursor:pointer";
+      showBtn.onclick = () => { hide.forEach(el => el.style.display = ""); showBtn.remove(); go.remove(); };
+      box.append(go, showBtn);
+    };
+    yes.onclick = () => answer(true);
+    no.onclick = () => answer(false);
+  });
+}
+setupGuesses();
+const WORDS = [
+  { e: "🏛️", d: "The leader of a city.", w: "mayor", o: ["mayor", "teacher", "doctor"] },
+  { e: "🗳️", d: "A time when people vote for a leader.", w: "election", o: ["election", "decision", "badge"] },
+  { e: "👥", d: "A group that makes city rules together.", w: "council", o: ["council", "family", "quest"] },
+  { e: "✅", d: "A choice you make after you think about the options.", w: "decision", o: ["decision", "teacher", "badge"] },
+  { e: "📜", d: "A plan or set of rules that a government uses.", w: "policy", o: ["policy", "family", "badge"] },
+  { e: "💰", d: "A plan for how much money to spend and save.", w: "budget", o: ["budget", "council", "teacher"] }
+];
+let wgI = 0, wgScore = 0;
+const WORD_AUDIO = {
+  "The leader of a city.": "audio/mayor.mp3",
+  "mayor": "audio/mayor.mp3",
+  "A time when people vote for a leader.": "audio/election.mp3",
+  "election": "audio/election.mp3",
+  "A group that makes city rules together.": "audio/council.mp3",
+  "council": "audio/council.mp3",
+  "A choice you make after you think about the options.": "audio/decision.mp3",
+  "decision": "audio/decision.mp3",
+  "A plan or set of rules that a government uses.": "audio/policy.mp3",
+  "policy": "audio/policy.mp3",
+  "A plan for how much money to spend and save.": "audio/budget.mp3",
+  "budget": "audio/budget.mp3"
+};
+function say(t) {
+  if (WORD_AUDIO[t]) { const a = new Audio(WORD_AUDIO[t]); a.play(); return; }
+  if (!("speechSynthesis" in window)) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(t);
+  u.lang = "en-US";
+  u.rate = 0.85;
+  speechSynthesis.speak(u);
+}
+function wgStart() { wgI = 0; wgScore = 0; wgRound(); }
+function wgRound() {
+  const body = document.getElementById("wgBody");
+  if (wgI >= WORDS.length) {
+    body.innerHTML = '<p style="font-size:1.4rem;font-weight:700">🌟 You got ' + wgScore + ' out of ' + WORDS.length + '!</p><button onclick="wgStart()" style="font:inherit;font-weight:700;border:none;border-radius:14px;background:#06d6a0;color:#1d2433;padding:8px 14px;cursor:pointer">🔁 Play again</button>';
+    return;
+  }
+  const r = WORDS[wgI];
+  const opts = [...r.o].sort(() => Math.random() - 0.5);
+  body.innerHTML = '<p style="font-size:2.4rem;margin:0">' + r.e + '</p><p style="font-weight:700">' + r.d + '</p><button onclick="say(\'' + r.d + '\')" style="font:inherit;font-weight:700;border:none;border-radius:14px;background:#06d6a0;color:#1d2433;padding:4px 10px;cursor:pointer">🔊 Hear the clue</button><div class="choices"></div><span class="fb"></span><p class="note">Round ' + (wgI + 1) + ' of ' + WORDS.length + '</p>';
+  const c = body.querySelector(".choices");
+  opts.forEach(o => {
+    const b = document.createElement("button");
+    b.textContent = o;
+    b.onclick = () => {
+      c.querySelectorAll("button").forEach(x => x.disabled = true);
+      const ok = o === r.w;
+      if (ok) wgScore++;
+      const fb = body.querySelector(".fb");
+      fb.textContent = ok ? "✅ Correct! " + r.w : "❌ Not quite. It is " + r.w + ".";
+      fb.style.color = ok ? "#15803d" : "#b45309";
+      say(r.w);
+      const next = document.createElement("button");
+      next.textContent = wgI < WORDS.length - 1 ? "Next ➡️" : "See my score";
+      next.style.cssText = "font:inherit;font-weight:700;border:none;border-radius:14px;background:#ffb703;color:#1d2433;padding:8px 14px;margin-top:8px;cursor:pointer";
+      next.onclick = () => { wgI++; wgRound(); };
+      body.appendChild(next);
+    };
+    c.appendChild(b);
+  });
+}
+wgStart();
+</script>
 </body>
 </html>
