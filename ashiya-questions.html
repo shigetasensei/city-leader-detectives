@@ -57,7 +57,7 @@ a{color:#1d4ed8;font-weight:700}
 <div class="quest" id="q1">
   <h2>🧭 Quest 1: About You</h2>
   <p class="lore">Learn who the mayor is and where his story began.</p>
-  <button onclick="readAloud(this,'q1')" style="font:inherit;font-weight:700;border:none;border-radius:14px;background:#06d6a0;color:#1d2433;padding:6px 12px;margin:0 0 8px;cursor:pointer">🔊 Listen</button>
+  <button onclick="playQ(this,'audio/ashiya-quest1.mp3','q1')" style="font:inherit;font-weight:700;border:none;border-radius:14px;background:#06d6a0;color:#1d2433;padding:6px 12px;margin:0 0 8px;cursor:pointer">🔊 Listen</button>
 
   <div class="step found">
     <div class="text">Step 1: Where were you born, and where did you grow up?</div>
@@ -200,6 +200,15 @@ function readAloud(btn, id) {
   u.onend = () => { btn.textContent = "🔊 Listen"; };
   btn.textContent = "⏹ Stop reading";
   speechSynthesis.speak(u);
+}
+let qClip = null;
+function playQ(btn, url, id) {
+  if (qClip && !qClip.paused) { qClip.pause(); qClip = null; btn.textContent = "🔊 Listen"; return; }
+  qClip = new Audio(url);
+  btn.textContent = "⏹ Stop";
+  qClip.onended = () => { btn.textContent = "🔊 Listen"; };
+  qClip.onerror = () => { btn.textContent = "🔊 Listen"; readAloud(btn, id); };
+  qClip.play();
 }
 function setupGuesses() {
   document.querySelectorAll(".step").forEach(step => {
