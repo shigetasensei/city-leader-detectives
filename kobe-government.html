@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>How Kobe Makes Decisions</title>
+<style>
+body{font-family:system-ui,-apple-system,sans-serif;background:linear-gradient(160deg,#fef6e4,#e0f4ff);margin:0;color:#1d2433;font-size:1.15rem;line-height:1.9}
+main{max-width:720px;margin:0 auto;padding:20px}
+h1{font-size:2rem;margin:.3em 0;color:#1d4ed8}
+h2{font-size:1.5rem;margin:0 0 8px;color:#102a43}
+.card{background:#fff;border-radius:18px;padding:18px 22px;margin:14px 0;box-shadow:0 4px 12px rgba(0,0,0,.08)}
+ul{padding-left:1.3em;margin:.4em 0}
+li{margin:.4em 0}
+mark{background:#fff3a3;padding:0 4px;border-radius:5px;font-weight:700;color:#102a43}
+.btn{display:inline-block;padding:12px 18px;border-radius:14px;text-decoration:none;font-weight:700;margin:6px 8px 6px 0;color:#1d2433;box-shadow:0 3px 0 rgba(0,0,0,.15)}
+.b1{background:#ffb703}.b3{background:#8ecae6}
+.muted{color:#4a5568;font-size:1rem}
+.g button{font:inherit;font-weight:700;border:2px solid #8ecae6;border-radius:999px;background:#fff;padding:2px 10px;margin:0 3px;cursor:pointer}
+.fb{display:block;font-weight:700;min-height:1.4em}
+.tool{font:inherit;font-weight:700;border:2px solid #cbd5e1;border-radius:12px;background:#fff;padding:6px 10px;cursor:pointer}
+.tool.on,.sz.on{border-color:#1d4ed8;background:#dbeafe}
+.sw{width:30px;height:30px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px #94a3b8;cursor:pointer;padding:0}
+.sw.on{box-shadow:0 0 0 3px #102a43}
+</style>
+</head>
+<body>
+<main>
+<a class="btn b3" href="kobe.html">⬅️ Back to Kobe</a>
+<h1>📍 Kobe City: How Decisions Are Made</h1>
+
+<div class="card" style="background:linear-gradient(135deg,#eaf6ff,#f0fff4)">
+  <h2>🏛️ How Kobe Makes Decisions</h2>
+  <p>A city is too big for everyone to vote on every idea. So residents <b>elect two groups</b> to decide for them:</p>
+  <ul>
+    <li>🧑‍💼 <b>The mayor</b> runs the city's work (schools, buses, water, care for older people) and makes the plans.</li>
+    <li>🗳️ <b>The City Assembly (市会)</b> is a group of elected members. It votes on the city's <mark>budget</mark> (how money is spent) and on <mark>ordinances</mark> (the city's own rules).</li>
+  </ul>
+  <ul style="list-style:none;padding:10px 14px;margin:10px 0;background:#fff8d6;border-radius:14px"><li style="margin:0">🤔 <b>Guess 1:</b> Who votes on how Kobe spends its money (the budget)?<br><span class="g"><button onclick="pick(this,false)">The mayor</button><button onclick="pick(this,true,'The City Assembly votes on the budget.')">The City Assembly</button><button onclick="pick(this,false)">Teachers</button></span> <span class="fb"></span></li></ul>
+  <p><b>How an idea becomes a decision:</b></p>
+  <ol>
+    <li>💡 <b>An idea:</b> residents, staff, or the mayor see a problem.</li>
+    <li>📝 <b>A plan:</b> the mayor's team writes a proposal, such as a new budget or rule.</li>
+    <li>🗣️ <b>Talk:</b> assembly members ask questions and discuss it in committees and meetings. Anyone can watch.</li>
+    <li>✅ <b>Vote:</b> the assembly votes yes or no.</li>
+    <li>🚀 <b>Action:</b> if yes, the mayor and city workers carry it out.</li>
+  </ol>
+  <ul style="list-style:none;padding:10px 14px;margin:10px 0;background:#fff8d6;border-radius:14px"><li style="margin:0">🤔 <b>Guess 2:</b> In the five steps, who usually writes the first proposal?<br><span class="g"><button onclick="pick(this,true,'The mayor\u2019s team usually writes it.')">The mayor's team</button><button onclick="pick(this,false)">Students</button><button onclick="pick(this,false)">Nobody</button></span> <span class="fb"></span></li></ul>
+  <p>The two groups <b>check each other</b>, so no one person decides everything. Residents also choose them by voting, and both serve <b>four-year terms</b>.</p>
+  <ul style="list-style:none;padding:10px 14px;margin:10px 0;background:#fff8d6;border-radius:14px"><li style="margin:0">🤔 <b>Guess 3:</b> A new rule gets a "no" vote. What happens?<br><span class="g"><button onclick="pick(this,false)">The city carries it out anyway</button><button onclick="pick(this,true,'The plan is not carried out as proposed. The mayor can change it and try again.')">The plan is not carried out as proposed</button><button onclick="pick(this,false)">The rule starts tomorrow</button></span> <span class="fb"></span></li></ul>
+  <ul style="list-style:none;padding:10px 14px;margin:10px 0;background:#fff8d6;border-radius:14px"><li style="margin:0">🤔 <b>Guess 4:</b> Why do the mayor and the Assembly check each other?<br><span class="g"><button onclick="pick(this,true,'Checking each other keeps power fair and shared.')">So one person cannot decide everything</button><button onclick="pick(this,false)">To make meetings longer</button><button onclick="pick(this,false)">Because they dislike each other</button></span> <span class="fb"></span></li></ul>
+  <ul style="list-style:none;padding:10px 14px;margin:10px 0;background:#fff8d6;border-radius:14px"><li style="margin:0">🤔 <b>Guess 5:</b> How long is one term for a mayor or an Assembly member?<br><span class="g"><button onclick="pick(this,false)">Two years</button><button onclick="pick(this,true,'Both serve four-year terms.')">Four years</button><button onclick="pick(this,false)">Ten years</button></span> <span class="fb"></span></li></ul>
+  <p class="muted">Kobe is a big city with nine wards, and each ward has its own office for local needs. The City Assembly has 65 members. Source: <a href="https://www.city.kobe.lg.jp/a71064/foreignlanguage/english/information/english/guide.html" target="_blank" rel="noopener">Guide to the Kobe City Assembly (English, City of Kobe)</a></p>
+</div>
+
+<a class="btn b3" href="kobe.html">⬅️ Back to Kobe</a> <a class="btn b3" href="index.html">🗺️ Main page</a>
+</main>
+<script>
+function pick(btn, ok, msg) {
+  const fb = btn.closest("li").querySelector(".fb");
+  fb.textContent = ok ? "✅ Yes! " + (msg || "") : "❌ Not quite. Try again!";
+  fb.style.color = ok ? "#15803d" : "#b45309";
+}
+</script>
+</body>
+</html>
