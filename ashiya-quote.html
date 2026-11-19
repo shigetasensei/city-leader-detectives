@@ -48,9 +48,11 @@ a{color:#1d4ed8;font-weight:700}
   <p>    <a class="navbtn" href="ashiya-questions.html" style="background:#ffd6e7;color:#1d2433;box-shadow:0 3px 0 #d6457f">📋 Questions for Mayor Takashima</a>
   </p>
   <div class="card">
-    <p class="big">Mission 1: Real quote or summary?</p>
+    <p class="big">Mission 1: AI detective!</p>
+    <p>AI can help, but AI can be wrong. Check what AI says before you trust it.</p>
+    <p class="big">Mission 2: Real quote or summary?</p>
     <p>Read each card. Is it the mayor's <b>real words</b>, or a <b>summary</b> written about what he said? Click the clue link to check the source.</p>
-    <p class="big">Mission 2: Sort the questions!</p>
+    <p class="big">Mission 3: Sort the questions!</p>
     <p>Can we <b>find the answer online</b>, or can only the mayor tell us?</p>
     <p class="muted">Mayor Ryōsuke Takashima (髙島崚輔) has been mayor of Ashiya since May 2023. Japanese quotes have rough English translations by the site author; a Japanese speaker should check them.</p>
     <p>More from the mayor: <a href="https://note.com/takashimaryosuke" target="_blank" rel="noopener">his note blog</a> for photos!</p>
@@ -58,8 +60,17 @@ a{color:#1d4ed8;font-weight:700}
   </div>
 </section>
 
+<section id="roundC" class="hidden">
+  <h2>Mission 1: AI detective</h2>
+  <p class="big">AI can help, but AI can be wrong. What should a detective do?</p>
+  <p class="muted">Read each AI answer. Check the source before you trust it.</p>
+  <div id="aiItemsC"></div>
+  <div id="resultC" class="card hidden"></div>
+  <button class="go hidden" id="finishC">➡️ Mission 2: Real quote or summary?</button>
+</section>
+
 <section id="roundA" class="hidden">
-  <h2>Mission 1: Quote or summary?</h2>
+  <h2>Mission 2: Quote or summary?</h2>
   <div class="bar"><div id="barA"></div></div>
   <p class="muted">Card <span id="qNum"></span> of 6 · ⭐ <span id="scoreA">0</span></p>
   <div class="card">
@@ -78,7 +89,7 @@ a{color:#1d4ed8;font-weight:700}
 </section>
 
 <section id="roundB" class="hidden">
-  <h2>Mission 2: Sort the questions!</h2>
+  <h2>Mission 3: Sort the questions!</h2>
   <p class="muted">👆 Tap a question, then tap a box. Tap a question in a box to move it back.</p>
   <button class="alt speak" id="speakB">🔊 Read the selected question</button>
   <div id="pool"></div>
@@ -157,7 +168,7 @@ function shuffle(arr) {
   return arr;
 }
 function show(id) {
-  ['intro', 'roundA', 'roundB', 'done'].forEach(s =>
+  ['intro', 'roundC', 'roundA', 'roundB', 'done'].forEach(s =>
     document.getElementById(s).classList.toggle('hidden', s !== id));
 }
 
@@ -244,13 +255,70 @@ document.getElementById('nextA').onclick = () => {
   idxA++;
   if (idxA < order.length) showA(); else startB();
 };
-document.getElementById('startBtn').onclick = () => {
+function startA() {
   order = shuffle([...cards]);
   idxA = 0;
   scoreAcount = 0;
   showA();
   show('roundA');
-};
+}
+
+// Mission 1: AI detective
+const AI_ITEMS_C = [
+  {q: "AI says: The Ashiya City Museum of Art and History opened in 2005.", ok: false,
+   why: "The museum opened in 1991, and it reopened in 2023.",
+   src: "https://art-tourism.jp/en/article/ashiya-museum_en", srcName: "Art Tourism Japan: Ashiya City Museum of Art"},
+  {q: "AI says: Miratap Park, also called Ashiya Grand Park, hosts a summer carnival with fireworks.", ok: true,
+   why: "The city's English guide lists a summer carnival with fireworks at Miratap Park.",
+   src: "https://www.city.ashiya.lg.jp/kokusai/living_information/documents/2026ashiyatechoeng3.pdf", srcName: "City of Ashiya English guide (PDF)"},
+  {q: "AI says: Harue Kitamura was elected as the first woman mayor of a city in Japan.", ok: true,
+   why: "Wikipedia says she was elected in 1991 as the first woman mayor of a city in Japan.",
+   src: "https://en.wikipedia.org/wiki/Ashiya,_Hyogo", srcName: "Wikipedia: Ashiya, Hyōgo"}
+];
+let scoreC = 0;
+function startC() {
+  scoreC = 0;
+  document.getElementById('resultC').classList.add('hidden');
+  document.getElementById('finishC').classList.add('hidden');
+  show('roundC');
+  renderC();
+}
+function renderC() {
+  const el = document.getElementById('aiItemsC');
+  el.innerHTML = '';
+  AI_ITEMS_C.forEach((it, i) => {
+    const d = document.createElement('div');
+    d.className = 'card';
+    d.innerHTML = '<p class="big">🤖 ' + it.q + '</p><button class="go" data-i="' + i + '" data-act="check">✅ Check the source first</button> <button class="alt" data-i="' + i + '" data-act="trust">🤷 Trust it</button><p class="fb"></p>';
+    el.appendChild(d);
+  });
+  el.querySelectorAll('button[data-act]').forEach(b => b.onclick = () => answerC(+b.dataset.i, b.dataset.act, b));
+}
+function answerC(i, act, btn) {
+  const card = btn.closest('.card');
+  if (card.dataset.done) return;
+  card.dataset.done = '1';
+  card.querySelectorAll('button').forEach(x => x.disabled = true);
+  const it = AI_ITEMS_C[i];
+  const fb = card.querySelector('.fb');
+  if (act === 'check') {
+    scoreC++;
+    fb.innerHTML = '<b class="good">✅ Smart detective! Check the source: <a href="' + it.src + '" target="_blank" rel="noopener">' + it.srcName + '</a></b><br><span class="muted">' + it.why + '</span>';
+  } else {
+    fb.innerHTML = it.ok
+      ? '<b class="bad">🤔 It is right this time, but you cannot know that without checking.</b>'
+      : '<b class="bad">❌ Careful! AI made a mistake. ' + it.why + '</b>';
+  }
+  if (document.querySelectorAll('#aiItemsC .card[data-done]').length === AI_ITEMS_C.length) {
+    const r = document.getElementById('resultC');
+    r.innerHTML = '<p class="big">Mission 1 score: ' + scoreC + ' / ' + AI_ITEMS_C.length + ' 🌟</p><p>Always check AI with a real source before you trust it.</p>';
+    r.classList.remove('hidden');
+    const f = document.getElementById('finishC');
+    f.classList.remove('hidden');
+    f.onclick = startA;
+  }
+}
+document.getElementById('startBtn').onclick = startC;
 
 // Mission 2
 let qs = [], place = {}, sel = null, checked = false, scoreB = 0;
@@ -332,13 +400,13 @@ function checkB() {
   btn.onclick = showDone;
 }
 function showDone() {
-  const total = scoreAcount + scoreB;
-  const max = cards.length + qs.length;
+  const total = scoreC + scoreAcount + scoreB;
+  const max = AI_ITEMS_C.length + cards.length + qs.length;
   const pct = total / max;
   const stars = pct >= 0.85 ? 5 : pct >= 0.65 ? 4 : pct >= 0.45 ? 3 : pct >= 0.25 ? 2 : 1;
   document.getElementById('stars').textContent = '⭐'.repeat(stars) + '☆'.repeat(5 - stars);
   document.getElementById('finalScore').textContent =
-    'Mission 1: ' + scoreAcount + ' / ' + cards.length + ' · Mission 2: ' + scoreB + ' / ' + qs.length;
+    'Mission 1: ' + scoreC + ' / ' + AI_ITEMS_C.length + ' · Mission 2: ' + scoreAcount + ' / ' + cards.length + ' · Mission 3: ' + scoreB + ' / ' + qs.length;
   const badges = ['🌱 Quote Explorer', '🔍 Clue Finder', '🕵️ Quote Detective', '🏆 Master Detective', '👑 Super Detective'];
   document.getElementById('badge').textContent = 'Your badge: ' + badges[stars - 1];
   show('done');

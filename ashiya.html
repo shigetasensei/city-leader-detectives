@@ -19,7 +19,7 @@ h1{font-size:1.8rem;margin:.3em 0;color:#1d4ed8}
 <h1>📍 Ashiya: Mayor Ryōsuke Takashima</h1>
 <div class="card">
   <p>Choose an activity to learn about the mayor and the city of Ashiya.</p>
-  <a class="btn b2" href="ashiya-detective.html">🤖 Mission 1: AI Detective</a>
+  <button onclick="playClip(this,'audio/ashiya-menu-intro.mp3')" style="font:inherit;font-weight:700;border:none;border-radius:14px;background:#06d6a0;color:#1d2433;padding:6px 12px;margin:0 0 8px;cursor:pointer">🔊 Listen</button>
   <a class="btn b1" href="ashiya-quote.html">🕵️ Quote Detectives: Ashiya</a>
   <a class="btn b4" href="ashiya-questions.html">💬 Questions for Mayor Takashima</a>
 </div>
@@ -36,5 +36,15 @@ h1{font-size:1.8rem;margin:.3em 0;color:#1d4ed8}
 </div>
 <p class="muted" style="font-size:.9rem;margin-top:24px">This page was made with Claude AI for educational purposes. No information is obtained from the students.</p>
 </main>
+<script>
+let clip = null;
+function playClip(btn, url) {
+  if (clip && !clip.paused) { clip.pause(); clip = null; btn.textContent = "🔊 Listen"; return; }
+  clip = new Audio(url);
+  btn.textContent = "⏹ Stop";
+  clip.onended = () => { btn.textContent = "🔊 Listen"; };
+  clip.play();
+}
+</script>
 </body>
 </html>
