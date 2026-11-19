@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Person or AI? Can you tell?</title>
+<style>
+body{font-family:system-ui,-apple-system,sans-serif;background:linear-gradient(160deg,#fef6e4,#e0f4ff);margin:0;color:#1d2433;line-height:1.6}
+main{max-width:780px;margin:0 auto;padding:20px}
+h1{font-size:1.8rem;margin:.3em 0}
+.card{background:#fff;border-radius:18px;padding:18px;margin:16px 0;box-shadow:0 4px 12px rgba(0,0,0,.08)}
+.say{font-size:1.3rem;font-weight:700;background:#f1f5f9;border-radius:14px;padding:14px}
+button{font:inherit;font-weight:700;border:2px solid #8ecae6;border-radius:999px;background:#fff;padding:8px 16px;margin:6px 6px 6px 0;cursor:pointer}
+button:disabled{opacity:.6}
+.next{background:#ffb703;border:none}
+.fb{font-weight:700;margin-top:10px}
+.muted{color:#4a5568;font-size:.95rem}
+a{color:#1d4ed8;font-weight:700}
+</style>
+</head>
+<body>
+<main>
+<h1>🕵️ Person or AI? Can you tell?</h1>
+<div class="card">
+  <p>Read each sentence about Mayor Takashima of Ashiya. Was it written by <b>the mayor (a person)</b> or by <b>AI</b>?</p>
+  <p class="muted">Guess first. The answer might surprise you.</p>
+</div>
+<div class="card" id="game"></div>
+<p><a href="resources.html">📚 Back to the Resources page</a> &nbsp; <a href="index.html">🏠 Back to the main page</a></p>
+<p class="muted" style="font-size:.85rem;margin-top:24px">This page was made with Claude AI for educational purposes. No information is obtained from the students. Check my facts with the official sources.</p>
+</main>
+<script>
+const R = [
+  {t:"Dialogue is what I want to value most in running city government.", a:"person", why:"This is the mayor's own greeting on his official website. It is in Japanese, and the English is a rough translation made by AI."},
+  {t:"In his first year, the mayor said he visited more than 300 events and facilities, and dialogue sessions helped him hear problems City Hall could not see.", a:"ai", why:"This summary was written by AI for this lesson. It is based on a Kobe Shimbun newspaper article."},
+  {t:"Our Ashiya: the most livable city in the world.", a:"person", why:"This is the tagline on the mayor's website. It is in Japanese, and the English is a rough translation made by AI."},
+  {t:"The mayor described his first year as a time of sowing seeds, a period of listening before carrying out policies.", a:"ai", why:"This summary was written by AI for this lesson. It is based on a Kobe Shimbun newspaper article."},
+  {t:"Ashiya has world-class charm and potential.", a:"person", why:"This is the mayor's own words on his website. It is in Japanese, and the English is a rough translation made by AI."},
+  {t:"The mayor said the next four years would decide the results of his term, and he asked citizens and staff to work with him.", a:"ai", why:"This summary was written by AI for this lesson. It is based on a Kobe Shimbun newspaper article."}
+];
+let i=0, score=0;
+function round(){
+  const g=document.getElementById('game');
+  if(i>=R.length){
+    g.innerHTML='<h2>🌟 You got '+score+' out of '+R.length+'</h2><p><b>Was it easy?</b> The AI sentences and the mayor\'s sentences sound almost the same. Even adults often cannot tell.</p><p><b>So what do detectives do?</b> They do not guess from how a sentence sounds. They check the source: <b>Who made it? Who is it for? When was it made?</b> And they ask, <b>"Was AI used?"</b></p><button class="next" onclick="i=0;score=0;round()">🔁 Play again</button>';
+    return;
+  }
+  const r=R[i];
+  g.innerHTML='<p class="muted">Sentence '+(i+1)+' of '+R.length+'</p><div class="say">“'+r.t+'”</div><button id="p">🧑 The mayor (a person)</button><button id="b">🤖 AI</button><div class="fb" id="fb"></div>';
+  const done=ans=>{
+    const ok=ans===r.a; if(ok) score++;
+    document.getElementById('p').disabled=document.getElementById('b').disabled=true;
+    const fb=document.getElementById('fb');
+    fb.innerHTML=(ok?'✅ Right! ':'❌ Not quite. ')+'This one was written by '+(r.a==='ai'?'<b>AI</b>':'<b>the mayor</b>')+'.<br><span class="muted" style="font-weight:400">'+r.why+'</span><br>';
+    const n=document.createElement('button'); n.className='next'; n.textContent=i<R.length-1?'Next ➡️':'See my score';
+    n.onclick=()=>{i++;round()}; fb.appendChild(n);
+  };
+  document.getElementById('p').onclick=()=>done('person');
+  document.getElementById('b').onclick=()=>done('ai');
+}
+round();
+</script>
+</body>
+</html>
