@@ -36,7 +36,7 @@ window.CLD_EASY={
  "✅ Vote: the assembly votes yes or no.": "✅ <b>Vote:</b> the Assembly votes yes or no.",
  "🚀 Action: if yes, the mayor and city workers carry it out.": "🚀 <b>Action:</b> if the vote is yes, the mayor and city workers do the plan.",
  "The two groups check each other, so no one person decides everything. Residents also choose them by voting, and both serve four-year terms.": "The two groups <b>check each other</b>. So one person cannot decide everything. Residents choose both groups by voting. Both serve for <b>four years</b> at a time.",
- "Kobe is a big city with nine wards, and each ward has its own office for local needs. The City Assembly has 65 members. Source: Guide to the Kobe City Assembly (English, City of Kobe)": "Kobe is a big city with nine wards. Each ward has its own office. The City Assembly has 65 members. Source: {a1}",
+ "Kobe is a big city with nine wards, and each ward has its own office for local needs. The City Assembly has 65 members. Source: What is the City Assembly? Q&A for kids (City of Kobe, Japanese only – use Translate this page) and The role of the City Assembly (City of Kobe, Japanese only)": "Kobe is a big city with nine wards. Each ward has its own office. The City Assembly has 65 members. Sources (Japanese only): {a1} and {a2}",
  "Who votes on how Kobe spends its money (the budget)?": "Who votes on how Kobe spends its money?",
  "In the five steps, who usually writes the first proposal?": "In the 5 steps, who usually writes the plan first?",
  "A new rule gets a \"no\" vote. What happens?": "The Assembly votes \"no\" on a new rule. What happens?",
