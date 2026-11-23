@@ -101,6 +101,7 @@
   ];
   function build(){
     if(document.getElementById('aithink'))return;
+    if(!/\/(ashiya|nishinomiya|kobe)\.html$/.test(location.pathname))return;
     var links=[].slice.call(document.querySelectorAll('a[href="index.html"]')).filter(function(a){return /back to (the )?main/i.test(a.textContent)});
     if(!links.length)return;
     var a=links[links.length-1];
