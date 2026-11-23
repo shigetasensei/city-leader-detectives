@@ -89,3 +89,35 @@
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',build);else build();
 })();
+
+/* Stop & Think card before "Back to the main page" */
+(function(){
+  var OPTS=[
+    ['🔊','Audio','A voice read the words to me, so I could listen.'],
+    ['👀','Pictures & colors','AI helped make pictures, maps and colors that make ideas easier to see.'],
+    ['🌏','Auto translation','AI can change words into another language so I can understand.'],
+    ['✂️','Chosen texts','AI helped pick or shorten the important facts for me.'],
+    ['📖','Easy-to-read words','The words were made simpler, or the font was easier to read.']
+  ];
+  function build(){
+    if(document.getElementById('aithink'))return;
+    var links=[].slice.call(document.querySelectorAll('a[href="index.html"]')).filter(function(a){return /back to (the )?main/i.test(a.textContent)});
+    if(!links.length)return;
+    var a=links[links.length-1];
+    var anchor=(a.parentNode&&a.parentNode.tagName==='P'&&a.parentNode.children.length<=2)?a.parentNode:a;
+    var d=document.createElement('section');d.id='aithink';d.className='aithink';d.setAttribute('aria-label','Stop and think about AI');
+    var h='<h3>🛑 Stop &amp; think: how did AI help you here?</h3><p>Pick the one that helped you most on this page.</p><div class="ai-opts" role="group" aria-label="AI help choices">';
+    OPTS.forEach(function(o,i){h+='<button type="button" aria-pressed="false" data-i="'+i+'">'+o[0]+' '+o[1]+'</button>'});
+    h+='</div><p class="ai-say" aria-live="polite"></p>';
+    d.innerHTML=h;
+    anchor.parentNode.insertBefore(d,anchor);
+    var say=d.querySelector('.ai-say');
+    d.addEventListener('click',function(e){
+      var b=e.target.closest('button[data-i]');if(!b)return;
+      d.querySelectorAll('button[data-i]').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});
+      var o=OPTS[+b.getAttribute('data-i')];
+      say.textContent='⭐ '+o[2]+' Tell a partner: Was it helpful? Was it always right?';
+    });
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',build);else build();
+})();

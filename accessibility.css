@@ -79,3 +79,15 @@ html.a11y-dark .quest .lore,html.a11y-dark .intro .note,html.a11y-dark .intro .m
 html.a11y-dark .quest h2{color:#93c5fd!important}
 html.a11y-dark .reward{color:#6ee7b7!important}
 html.a11y-dark .step a{color:#1d4ed8!important}
+
+/* Stop & Think: how is AI helping me? */
+.aithink{max-width:720px;margin:18px auto;padding:16px 18px;border-radius:22px;border:3px dashed #c084fc;background:linear-gradient(135deg,#fdf2f8,#f3e8ff 55%,#e0f2fe);color:#1d2433 !important;font-family:inherit;text-align:center}
+.aithink *{color:#1d2433 !important}
+.aithink h3{margin:0 0 4px;font-size:1.15rem}
+.aithink p{margin:4px 0 10px}
+.aithink .ai-opts{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.aithink .ai-opts button{font:inherit;font-weight:700;border:3px solid #a78bfa;background:#fff !important;border-radius:999px;padding:8px 14px;cursor:pointer;box-shadow:0 3px 0 #c4b5fd}
+.aithink .ai-opts button[aria-pressed="true"]{background:#fde68a !important;border-color:#f59e0b;box-shadow:0 3px 0 #d98e00}
+.aithink .ai-opts button:focus-visible{outline:4px solid #f59e0b;outline-offset:2px}
+.aithink .ai-say{margin-top:10px;min-height:1.4em;font-weight:700}
+html.a11y-dark .aithink,html.a11y-dark .aithink h3,html.a11y-dark .aithink p,html.a11y-dark .aithink button{color:#1d2433 !important}
