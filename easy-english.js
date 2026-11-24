@@ -1,5 +1,6 @@
 /* Easy English text. Keys are the original text of each element. Generated for the reading-level switch. */
 window.CLD_EASY={
+ "This site is made for Grade 3 students. It helps you think carefully about the information you find online and notice how AI can create, support and change what you see. It was made with Claude AI for educational purposes. No information is collected from students.": "This site is for Grade 3 students. It helps you think carefully about what you see online. It also helps you notice how AI can help make things. Claude AI helped make this site for learning. We do not collect any information from students.",
  "This page was made with Claude AI for educational purposes. No information is obtained from the students.": "Claude AI helped make this page for learning. We do not collect any information from students.",
  "Hyogo (red) is in the Kansai region, between Osaka and the Sea of Japan.": "Hyogo is the red part of the map. It is in the Kansai area, next to Osaka and near the Sea of Japan.",
  "Drag each prefecture onto the map. Can you find Hyogo? Free puzzle by Digital Gene.": "Drag each prefecture onto the map. Can you find Hyogo? The puzzle is free.",
