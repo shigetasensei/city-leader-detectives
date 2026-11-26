@@ -127,7 +127,7 @@ function show(){
   else{tried=true;m.style.color='#b45309';m.textContent='❌ Not quite. Try another one!';b.classList.add('shake');b.disabled=true;}
  };box.appendChild(b);});
 }
-function end(){clr();
+function end(){clr();try{var P=JSON.parse(localStorage.getItem('cld-island')||'{}');P.auto=P.auto||{};P.auto['cq']=Math.max(P.auto['cq']||0,lv);localStorage.setItem('cld-island',JSON.stringify(P))}catch(e){}
  const n=deck.length,pct=score/n;
  const badge=pct>=0.85?'🏆 Master Detective':pct>=0.6?'🥈 Super Detective':'🥉 Rookie Detective';
  st.innerHTML=`<div class="big">🏅</div><h2>${NAMES[lv][0]} ${NAMES[lv][1]}: ${badge}</h2><p style="font-size:1.3rem">${score} / ${n} right on the first try</p>`+

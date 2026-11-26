@@ -150,7 +150,7 @@ function q2(){
   else{m.style.color='#b45309';m.textContent='❌ Try again!';b.classList.add('shake');b.disabled=true;}
  };box.appendChild(b);});
 }
-function end(){clr();
+function end(){clr();try{var P=JSON.parse(localStorage.getItem('cld-island')||'{}');P.auto=P.auto||{};P.auto['hg']=Math.max(P.auto['hg']||0,LEVEL);localStorage.setItem('cld-island',JSON.stringify(P))}catch(e){}
  const max=SORT.length*10+WHO.length*10;
  const badge=score>=max*0.9?'🏆 Hyogo Master Detective':score>=max*0.6?'🥈 Super Detective':'🥉 Rookie Detective';
  st.innerHTML=`<div class="big">🏅</div><h2>${badge}</h2><p style="font-size:1.4rem">⭐ ${score} points</p><p>Best streak: 🔥 ${best}</p><button class="bk b-c" style="width:100%" onclick="menu()">🔁 Play again</button>`;
