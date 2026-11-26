@@ -70,30 +70,45 @@ body{background-attachment:fixed;min-height:100vh}
 <p class="muted" style="margin-top:14px">Stuck? Read the chart first: <a href="hyogo-structure.html">Who is who in Hyogo</a>. Made with Claude AI. Please check the facts.</p>
 </main>
 <script>
-const SORT=[
- ['Hyogo','p'],['Kobe','c'],['Nishinomiya','c'],['Ashiya','c'],['Himeji','c'],
- ['Sayo','t'],['Kamigori','t'],["Shin\u2019onsen",'t'],
- ['Higashinada','w'],['Nada','w'],['Suma','w'],['Chuo','w']
-];
-const HINT={p:'A prefecture is the biggest. It holds many cities and towns.',c:'A city is bigger and busier than a town.',t:'A town is smaller, with more countryside.',w:'A ward is a part inside a very big city, like Kobe.'};
-const NAME={p:'Prefecture',c:'City',t:'Town',w:'Ward'};
-const WHO=[
+const LV={
+ 1:{name:'Easy',icon:'⭐',SORT:[['Hyogo','p'],['Kobe','c'],['Nishinomiya','c'],['Ashiya','c'],['Himeji','c'],['Sayo','t'],['Kamigori','t'],["Shin\u2019onsen",'t'],['Higashinada','w'],['Nada','w'],['Suma','w'],['Chuo','w']],
+ WHO:[
  ['Who leads Hyogo Prefecture?',['Governor','Mayor','Ward Mayor'],0],
  ['Who leads Kobe City?',['Governor','Mayor','Ward Mayor'],1],
  ['Who leads Ashiya City?',['Mayor','Governor','Ward Mayor'],0],
  ['Who leads Higashinada Ward?',['Mayor','Ward Mayor','Governor'],1],
- ['Which one makes Kobe\u2019s rules and budget with the mayor?',['City Assembly','Prefecture Zoo','Ward Bus'],0]
-];
+ ['Which one makes Kobe\u2019s rules and budget with the mayor?',['City Assembly','Prefecture Zoo','Ward Bus'],0]]},
+ 2:{name:'Normal',icon:'⭐⭐',SORT:[['Akashi','c'],['Itami','c'],['Sanda','c'],['Amagasaki','c'],['Taka','t'],['Inami','t'],['Ichikawa','t'],['Nagata','w'],['Tarumi','w'],['Hyogo','p'],['Takarazuka','c'],['Fukusaki','t']],
+ WHO:[
+ ['Who leads Sayo Town?',['Town Mayor','Governor','Ward Mayor'],0],
+ ['Who leads Nada Ward?',['Mayor','Ward Mayor','Governor'],1],
+ ['How do people get to be mayor?',['Citizens vote for them','The teacher picks them','They are chosen by lottery'],0],
+ ['How long is a mayor\u2019s term?',['4 years','1 year','10 years'],0],
+ ['Which places have wards?',['Only very big cities like Kobe','Every town','Every school'],0],
+ ['Do Ashiya and Nishinomiya have wards?',['No','Yes, 9 each','Yes, 3 each'],0]]},
+ 3:{name:'Challenging',icon:'⭐⭐⭐',SORT:[['Awaji','c'],['Sumoto','c'],['Tamba-Sasayama','c'],['Kami','t'],['Harima','t'],['Taishi','t'],['Kita','w'],['Nishi','w'],['Chuo','w'],['Toyooka','c'],['Kamikawa','t'],['Suma','w'],['Ako','c'],['Inagawa','t']],
+ WHO:[
+ ['Hyogo has 29 cities and 12 towns. How many cities and towns in all?',['41','39','17'],0],
+ ['Which one is NOT a city or a town?',['Higashinada Ward','Himeji','Sayo'],0],
+ ['The City Assembly has 65 members. How many votes is a majority (more than half)?',['33','32','30'],0],
+ ['A mayor wins in 2025 and serves 4 years. When is the next mayor election?',['2029','2027','2030'],0],
+ ['Kobe calls its City Assembly 市会 (shikai). Which city does too?',['Kyoto','Sayo','Higashinada Ward'],0],
+ ['Why can the mayor and the City Assembly work as equals?',['Citizens elect both of them','The Governor picks both','They are the same people'],0],
+ ['Which is bigger?',['A prefecture holds many cities and towns','A town holds many prefectures','A ward holds a prefecture'],0]]}
+};
+let SORT=LV[1].SORT,WHO=LV[1].WHO,LEVEL=1;
+const HINT={p:'A prefecture is the biggest. It holds many cities and towns.',c:'A city is bigger and busier than a town.',t:'A town is smaller, with more countryside.',w:'A ward is a part inside a very big city, like Kobe.'};
+const NAME={p:'Prefecture',c:'City',t:'Town',w:'Ward'};
 const st=document.getElementById('stage');
 let score=0,streak=0,best=0,i=0,deck=[],cur=null,r2=0,ok2=0;
 function shuffle(a){for(let k=a.length-1;k>0;k--){const j=Math.floor(Math.random()*(k+1));[a[k],a[j]]=[a[j],a[k]];}return a;}
 function burst(n,emojis){for(let k=0;k<n;k++){const e=document.createElement('div');e.className='fly';e.textContent=emojis[k%emojis.length];e.style.left=(30+Math.random()*40)+'vw';e.style.top='55vh';e.style.setProperty('--x',(Math.random()*160-80)+'px');e.style.setProperty('--r',(Math.random()*360)+'deg');document.body.appendChild(e);setTimeout(()=>e.remove(),1200);}}
-function start(){score=0;streak=0;best=0;i=0;deck=shuffle(SORT.slice());next();}
+function start(l){if(l){LEVEL=l;SORT=LV[l].SORT;WHO=LV[l].WHO;}score=0;streak=0;best=0;i=0;deck=shuffle(SORT.slice());next();}
 function hud(label){return `<div class="hud"><span>${label}</span><span>⭐ ${score}</span><span>🔥 ${streak}</span></div>`;}
 function next(){
  if(i>=deck.length){return round2Intro();}
  cur=deck[i];
- st.innerHTML=hud(`Round 1: Sort it! ${i+1}/${deck.length}`)+
+ st.innerHTML=hud(`${LV[LEVEL].icon} Round 1: Sort it! ${i+1}/${deck.length}`)+
  `<p style="margin:0">Where does this place belong?</p><div class="card-now pop" id="cardNow">${cur[0]}</div>
  <div class="msg" id="msg"></div>
  <div class="buckets">
@@ -131,10 +146,16 @@ function q2(){
 function end(){
  const max=SORT.length*10+WHO.length*10;
  const badge=score>=max*0.9?'🏆 Hyogo Master Detective':score>=max*0.6?'🥈 Super Detective':'🥉 Rookie Detective';
- st.innerHTML=`<div class="big">🏅</div><h2>${badge}</h2><p style="font-size:1.4rem">⭐ ${score} points</p><p>Best streak: 🔥 ${best}</p><button class="bk b-c" style="width:100%" onclick="start()">🔁 Play again</button>`;
+ st.innerHTML=`<div class="big">🏅</div><h2>${badge}</h2><p style="font-size:1.4rem">⭐ ${score} points</p><p>Best streak: 🔥 ${best}</p><button class="bk b-c" style="width:100%" onclick="menu()">🔁 Play again</button>`;
  burst(14,['🎉','⭐','🎊','✨']);
 }
-st.innerHTML=`<div class="big">🕵️</div><h2>Ready, detective?</h2><p>Sort places into <b>Prefecture, City, Town</b> or <b>Ward</b>. Then find out <b>who leads</b> each place. Get 3 in a row for a 🔥 bonus!</p><button class="bk b-c" style="width:100%" onclick="start()">▶️ Start</button>`;
+function menu(){
+ st.innerHTML=`<div class="big">🕵️</div><h2>Ready, detective?</h2><p>Sort places into <b>Prefecture, City, Town</b> or <b>Ward</b>. Then find out <b>who leads</b> each place. Get 3 in a row for a 🔥 bonus!</p><p><b>Pick a level:</b></p>
+ <button class="bk b-c" style="width:100%;margin-bottom:8px" onclick="start(1)">⭐ Easy<small>Places you know</small></button>
+ <button class="bk b-p" style="width:100%;margin-bottom:8px" onclick="start(2)">⭐⭐ Normal<small>More places and more about how leaders are chosen</small></button>
+ <button class="bk b-t" style="width:100%" onclick="start(3)">⭐⭐⭐ Challenging<small>Tricky places, math and thinking questions</small></button>`;
+}
+menu();
 </script>
 </body>
 </html>
