@@ -138,19 +138,49 @@ const AW=[[134.70,34.42],[134.74,34.22],[134.86,34.16],[134.98,34.30],[134.98,34
 const XY=(lo,la)=>[((lo-134.1)*246).toFixed(1),((35.8-la)*300+10).toFixed(1)];
 const PT=a=>'M'+a.map(p=>XY(p[0],p[1]).join(',')).join('L')+'Z';
 const CITIES=[
- ['Kobe','神戸',135.18,34.69,'Kobe is a city. It is the capital of Hyogo. It has 9 wards.'],
- ['Nishinomiya','西宮',135.34,34.74,'Nishinomiya is a city. Koshien Stadium is here. It has no wards.'],
- ['Ashiya','芦屋',135.30,34.73,'Ashiya is a city. It is between the sea and Mount Rokko. It has no wards.'],
- ['Amagasaki','尼崎',135.41,34.73,'Amagasaki is a city in the east of Hyogo, next to Osaka.'],
- ['Himeji','姫路',134.69,34.82,'Himeji is a city in the west of Hyogo.'],
- ['Toyooka','豊岡',134.82,35.54,'Toyooka is a city in the north of Hyogo, near the Sea of Japan.']
+ ['Kobe','神戸',135.18,34.69,"Kobe is a city. It is the capital of Hyogo. It has 9 wards."],
+ ['Himeji','姫路',134.69,34.82,"Himeji is a city in the west of Hyogo. Himeji Castle is here."],
+ ['Amagasaki','尼崎',135.41,34.73,"Amagasaki is a city in the east of Hyogo, next to Osaka."],
+ ['Akashi','明石',134.99,34.65,"Akashi is a city in the south of Hyogo."],
+ ['Nishinomiya','西宮',135.34,34.74,"Nishinomiya is a city. Koshien Stadium is here. It has no wards."],
+ ['Sumoto','洲本',134.9,34.34,"Sumoto is a city on Awaji Island."],
+ ['Ashiya','芦屋',135.3,34.73,"Ashiya is a city. It is between the sea and Mount Rokko. It has no wards."],
+ ['Itami','伊丹',135.42,34.78,"Itami is a city in the southeast of Hyogo."],
+ ['Aioi','相生',134.47,34.8,"Aioi is a city in the west of Hyogo."],
+ ['Toyooka','豊岡',134.82,35.54,"Toyooka is a city in the north of Hyogo, near the Sea of Japan."],
+ ['Kakogawa','加古川',134.85,34.76,"Kakogawa is a city in the south of Hyogo."],
+ ['Ako','赤穂',134.39,34.75,"Ako is a city in the southwest of Hyogo."],
+ ['Nishiwaki','西脇',134.97,35.0,"Nishiwaki is a city in the middle of Hyogo."],
+ ['Takarazuka','宝塚',135.36,34.81,"Takarazuka is a city in the east of Hyogo."],
+ ['Miki','三木',135.0,34.8,"Miki is a city in the middle of Hyogo."],
+ ['Takasago','高砂',134.79,34.76,"Takasago is a city in the south of Hyogo."],
+ ['Kawanishi','川西',135.42,34.83,"Kawanishi is a city in the east of Hyogo."],
+ ['Ono','小野',134.93,34.85,"Ono is a city in the middle of Hyogo."],
+ ['Sanda','三田',135.23,34.89,"Sanda is a city in the east of Hyogo."],
+ ['Kasai','加西',134.85,34.92,"Kasai is a city in the middle of Hyogo."],
+ ['Tamba-Sasayama','丹波篠山',135.22,35.06,"Tamba-Sasayama is a city in the northeast of Hyogo."],
+ ['Yabu','養父',134.75,35.4,"Yabu is a city in north of Hyogo."],
+ ['Tamba','丹波',135.07,35.15,"Tamba is a city in the north of Hyogo."],
+ ['Minamiawaji','南あわじ',134.77,34.28,"Minamiawaji is a city on Awaji Island."],
+ ['Asago','朝来',134.85,35.34,"Asago is a city in north of Hyogo."],
+ ['Awaji','淡路',135.0,34.49,"Awaji is a city on Awaji Island."],
+ ['Shiso','宍粟',134.55,35.0,"Shiso is a city in the west of Hyogo."],
+ ['Tatsuno','たつの',134.55,34.86,"Tatsuno is a city in the west of Hyogo."],
+ ['Kato','加東',134.96,34.92,"Kato is a city in the middle of Hyogo."]
 ];
 const TOWNS=[
- ['Sayo','佐用',134.36,34.97,'Sayo is a town in the west of Hyogo.'],
- ['Kamigori','上郡',134.40,34.88,'Kamigori is a town in the southwest of Hyogo.'],
- ["Shin’onsen",'新温泉',134.45,35.58,"Shin’onsen is a town in the north of Hyogo, near the sea."],
- ['Ichikawa','市川',134.78,35.00,'Ichikawa is a town in the middle of Hyogo.'],
- ['Kamikawa','神河',134.85,35.06,'Kamikawa is a town in the middle of Hyogo.']
+ ['Inagawa','猪名川',135.4,34.9,"Inagawa is a town in the east of Hyogo."],
+ ['Inami','稲美',134.9,34.72,"Inami is a town in the south of Hyogo."],
+ ['Harima','播磨',134.85,34.8,"Harima is a town in the middle of Hyogo."],
+ ['Ichikawa','市川',134.79,35.03,"Ichikawa is a town in the north of Hyogo."],
+ ['Fukusaki','福崎',134.77,34.94,"Fukusaki is a town in the middle of Hyogo."],
+ ['Kamikawa','神河',134.85,35.06,"Kamikawa is a town in the north of Hyogo."],
+ ['Taishi','太子',134.58,34.8,"Taishi is a town in the west of Hyogo."],
+ ['Kamigori','上郡',134.36,34.88,"Kamigori is a town in the west of Hyogo."],
+ ['Sayo','佐用',134.36,35.0,"Sayo is a town in the west of Hyogo."],
+ ['Taka','多可',134.98,35.12,"Taka is a town in the north of Hyogo."],
+ ['Kami','香美',134.6,35.58,"Kami is a town in north of Hyogo."],
+ ["Shin’onsen",'新温泉',134.45,35.62,"Shin’onsen is a town in north of Hyogo."]
 ];
 const WARDS=[
  ['Nishi','西区',20,40,170,220],['Kita','北区',190,40,490,130],
@@ -160,7 +190,7 @@ const WARDS=[
 const svg=document.getElementById('mapSvg'),list=document.getElementById('mapList'),info=document.getElementById('mapInfo');
 let tab='p',sel=null;
 const INFO={p:'Hyogo Prefecture (兵庫県) is the whole orange area. It has 41 cities and towns. Kobe is the capital.',
- c:'Hyogo has 29 cities. Here are 6 of them. Tap one.',t:'Hyogo has 12 towns. Here are 5 of them. Tap one.',
+ c:'Hyogo has 29 cities. All 29 are on this map. Tap a green dot or a name.',t:'Hyogo has 12 towns. All 12 are on this map. Tap an orange dot or a name.',
  w:'Kobe City has 9 wards. This map zooms in on Kobe and is not to scale. Tap a number or a name.'};
 function draw(){
   let h='';
@@ -182,7 +212,7 @@ function draw(){
     const set=tab==='c'?CITIES:tab==='t'?TOWNS:[];
     const col=tab==='c'?'#2a9d52':'#f08a4b';
     set.forEach(c=>{const p=XY(c[2],c[3]),on=sel===c[0];
-      h+=`<g class="pin" tabindex="0" role="button" aria-label="${c[0]}" data-n="${c[0]}"><circle cx="${p[0]}" cy="${p[1]}" r="${on?10:7}" fill="${col}" stroke="${on?'#1d4ed8':'#fff'}" stroke-width="${on?3:2}"/>`+(on?`<text x="${p[0]}" y="${+p[1]-14}" text-anchor="middle" font-size="13" fill="#1d2433" stroke="#fff" stroke-width="3" paint-order="stroke">${c[0]}</text>`:'')+'</g>';});
+      h+=`<g class="pin" tabindex="0" role="button" aria-label="${c[0]}" data-n="${c[0]}"><circle cx="${p[0]}" cy="${p[1]}" r="13" fill="transparent"/><circle cx="${p[0]}" cy="${p[1]}" r="${on?10:5}" fill="${col}" stroke="${on?'#1d4ed8':'#fff'}" stroke-width="${on?3:2}"/>`+(on?`<text x="${p[0]}" y="${+p[1]-14}" text-anchor="middle" font-size="13" fill="#1d2433" stroke="#fff" stroke-width="3" paint-order="stroke">${c[0]}</text>`:'')+'</g>';});
   }
   svg.innerHTML=h;
   svg.querySelectorAll('[data-n]').forEach(g=>{const go=()=>choose(g.dataset.n);g.addEventListener('click',go);g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}})});
@@ -197,7 +227,7 @@ function choose(n){sel=n;draw();
 function setTab(t){tab=t;sel=null;document.querySelectorAll('#tabs button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.t===t)));draw();info.textContent=INFO[t];}
 document.querySelectorAll('#tabs button').forEach(b=>b.addEventListener('click',()=>setTab(b.dataset.t)));
 function showMap(t){setTab(t);document.getElementById('mapCard').scrollIntoView({behavior:'smooth',block:'start'});}
-setTab('p');
+setTab(location.search.indexOf('tab=c')>0?'c':location.search.indexOf('tab=t')>0?'t':'p');
 </script>
 </body>
 </html>
